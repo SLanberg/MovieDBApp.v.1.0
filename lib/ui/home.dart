@@ -18,21 +18,29 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late ScrollController _scrollController;
+  late ScrollController _scrollControllerLatest;
+  late ScrollController _scrollControllerPopular;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_onScroll);
+    _scrollControllerLatest = ScrollController();
+    _scrollControllerLatest.addListener(_onScroll);
+
+    _scrollControllerPopular = ScrollController();
+    _scrollControllerPopular.addListener(_onScroll);
   }
 
   void _onScroll() {
 
-    if (_scrollController.position.atEdge) {
+    if (_scrollControllerLatest.position.atEdge) {
       // Load more data when reaching the end of the scroll
-
       context.read<MovieDataBloc>().add(ScrollReachedEndLatestMovies());
+    }
+
+    if (_scrollControllerPopular.position.atEdge) {
+      // Load more data when reaching the end of the scroll
+      context.read<MovieDataBloc>().add(ScrollReachedEndPopularMovies());
     }
   }
 
@@ -84,7 +92,7 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                      'http://image.tmdb.org/t/p/w500/${apiResult[Random().nextInt(apiResult.length)].posterPath}'),
+                      'http://image.tmdb.org/t/p/w500/bPdE1CbdP8Bf1NMg9PF4QkPR9oZ.jpg'),
                   // Replace with your image path
                   fit: BoxFit.fill,
                 ),
@@ -102,10 +110,14 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   height: 300.0,
                   child: ListView.builder(
-                    controller: _scrollController,
+                    controller: _scrollControllerLatest,
                     scrollDirection: Axis.horizontal,
                     itemCount: apiResult.length,
                     itemBuilder: (context, index) {
+                      if (index == apiResult.length - 1) {
+                        return _buildLoadMoreIndicator();
+                      }
+
                       return Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Column(
@@ -155,10 +167,11 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   height: 300.0,
                   child: ListView.builder(
+                    controller: _scrollControllerPopular,
                     scrollDirection: Axis.horizontal,
                     itemCount: popularResult.length,
                     itemBuilder: (context, index) {
-                      if (index == apiResult.length - 1) {
+                      if (index == popularResult.length - 1) {
                         return _buildLoadMoreIndicator();
                       }
 
@@ -190,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                               alignment: Alignment
                                   .topLeft, // Align the text at the top left
                               child: Text(
-                                '${apiResult[index].originalTitle}',
+                                '${popularResult[index].title}',
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign
                                     .start, // Align the text at the start (left)
@@ -229,7 +242,7 @@ class _HomePageState extends State<HomePage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: Image.network(
-                                    "http://image.tmdb.org/t/p/w500/${topRatedApiResult?[index].posterPath}",
+                                    "http://image.tmdb.org/t/p/w500/${topRatedApiResult[index].posterPath}",
                                     width: 180,
                                     fit: BoxFit.cover,
                                   ),
@@ -285,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: Image.network(
-                                    "http://image.tmdb.org/t/p/w500/${upcomingApiResult?[index].posterPath}",
+                                    "http://image.tmdb.org/t/p/w500/${upcomingApiResult[index].posterPath}",
                                     width: 180,
                                     fit: BoxFit.cover,
                                   ),
@@ -300,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                               alignment: Alignment
                                   .topLeft, // Align the text at the top left
                               child: Text(
-                                '${upcomingApiResult?[index].originalTitle}',
+                                '${upcomingApiResult[index].originalTitle}',
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign
                                     .start, // Align the text at the start (left)
@@ -408,9 +421,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           Expanded(
             child: Container(
-              width: 180,
-              color: Colors.grey[200],
-              child: Center(
+              width: 160,
+              color: Colors.transparent,
+              child: const Center(
                 child: CircularProgressIndicator(),
               ),
             ),

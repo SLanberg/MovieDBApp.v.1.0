@@ -64,13 +64,31 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
             }
           } catch (e) {
             emit(MovieDataErrorState());
-
-
           }
         }
       }
 
       if (event is ScrollReachedEndPopularMovies) {
+        if (state is MovieDataLoadedState) {
+          MovieDataLoadedState currentState = state as MovieDataLoadedState;
+
+          try {
+            int nextPagePopular = currentState.popularMoviesCurrentPage + 1;
+            List<MovieModel>? apiResultPopular = await movieRepository.getMovieData(
+              "https://api.themoviedb.org/3/movie/popular?language=en-US&page=$nextPagePopular&api_key=${dotenv.env['API_KEY']}",
+            );
+
+            if (apiResultPopular != null) {
+              List<MovieModel> updatedPopularMovies = [...currentState.popularMoviesApiResult, ...apiResultPopular];
+              emit(currentState.copyWith(
+                popularMoviesApiResult: updatedPopularMovies,
+                popularMoviesCurrentPage: nextPagePopular,
+              ));
+            }
+          } catch (e) {
+            emit(MovieDataErrorState());
+          }
+        }
 
       }
 
