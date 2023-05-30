@@ -9,8 +9,34 @@ import 'package:intl/intl.dart';
 
 import 'dart:math';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+
+    if (_scrollController.position.atEdge) {
+      // Load more data when reaching the end of the scroll
+
+      context.read<MovieDataBloc>().add(ScrollReachedEndLatestMovies());
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +70,8 @@ class HomePage extends StatelessWidget {
   Widget buildGameModel(
     List<MovieModel> apiResult,
     List<MovieModel> popularResult,
-    List<MovieModel>? topRatedApiResult,
-    List<MovieModel>? upcomingApiResult,
+    List<MovieModel> topRatedApiResult,
+    List<MovieModel> upcomingApiResult,
   ) {
     return CustomScrollView(
       slivers: [
@@ -76,6 +102,7 @@ class HomePage extends StatelessWidget {
                 child: SizedBox(
                   height: 300.0,
                   child: ListView.builder(
+                    controller: _scrollController,
                     scrollDirection: Axis.horizontal,
                     itemCount: apiResult.length,
                     itemBuilder: (context, index) {
@@ -129,8 +156,12 @@ class HomePage extends StatelessWidget {
                   height: 300.0,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: apiResult.length,
+                    itemCount: popularResult.length,
                     itemBuilder: (context, index) {
+                      if (index == apiResult.length - 1) {
+                        return _buildLoadMoreIndicator();
+                      }
+
                       return Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Column(
@@ -181,7 +212,7 @@ class HomePage extends StatelessWidget {
                   height: 300.0,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: apiResult.length,
+                    itemCount: topRatedApiResult.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 8.0),
@@ -213,7 +244,7 @@ class HomePage extends StatelessWidget {
                               alignment: Alignment
                                   .topLeft, // Align the text at the top left
                               child: Text(
-                                '${topRatedApiResult?[index].originalTitle}',
+                                '${topRatedApiResult[index].originalTitle}',
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign
                                     .start, // Align the text at the start (left)
@@ -235,7 +266,7 @@ class HomePage extends StatelessWidget {
                   height: 300.0,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: apiResult.length,
+                    itemCount: upcomingApiResult.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 8.0),
@@ -304,7 +335,6 @@ class HomePage extends StatelessWidget {
           maxChildSize: 0.75,
           minChildSize: 0.32,
           builder: (context, scrollController) => SingleChildScrollView(
-            controller: scrollController,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -368,6 +398,25 @@ class HomePage extends StatelessWidget {
             ),
           ),
         )
+    );
+  }
+
+  Widget _buildLoadMoreIndicator() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+              width: 180,
+              color: Colors.grey[200],
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
