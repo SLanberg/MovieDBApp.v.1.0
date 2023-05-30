@@ -292,7 +292,7 @@ class HomePage extends StatelessWidget {
   void _showImageDetails(BuildContext context, int imageIndex, List<MovieModel> apiResult) {
     showModalBottomSheet(context: context,
         isScrollControlled: true,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(10.0),
                 ),
@@ -308,7 +308,7 @@ class HomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 30.0,),
+                const SizedBox(height: 30.0,),
 
                 SizedBox(
                   width: 350,
@@ -368,72 +368,6 @@ class HomePage extends StatelessWidget {
             ),
           ),
         )
-    );
-  }
-
-
-  void _showImageDetails3(
-      BuildContext context, int imageIndex, List<MovieModel> apiResult) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(25.0),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 400.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.network(
-                  'http://image.tmdb.org/t/p/w100/${apiResult[imageIndex].posterPath}',
-                  // width: 300,
-                  height: 150,
-                  fit:BoxFit.fill
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.info),
-                title: Text('${apiResult[imageIndex].title}'),
-                onTap: () {
-                  // Navigator.pop(context); // Close the bottom sheet
-                  // Handle "View Details" action
-                  _handleViewDetails(imageIndex, apiResult);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.calendar_month),
-                title: apiResult[imageIndex].releaseDate != null
-                    ? Text(DateFormat('yyyy-MM-dd')
-                        .format(apiResult[imageIndex].releaseDate!))
-                    : null,
-                onTap: () {
-                  // Navigator.pop(context); // Close the bottom sheet
-                  // Handle "View Details" action
-                  _handleViewDetails(imageIndex, apiResult);
-                },
-              ),
-              ListTile(
-                  leading: const Icon(Icons.contact_support_rounded),
-                  title: apiResult[imageIndex].overview != null
-                      ? Text('${apiResult[imageIndex].overview}')
-                      : null),
-
-              // In the response, if video is available show a play icon
-              // (use any free resource available).
-              // Clicking on this icon snackbar should appear with movie name.
-              ListTile(
-                  leading: apiResult[imageIndex].video != null &&
-                          apiResult[imageIndex].video != false
-                      ? const Icon(Icons.play_arrow)
-                      : null),
-            ],
-          ),
-        );
-      },
     );
   }
 
