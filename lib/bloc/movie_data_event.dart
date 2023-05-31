@@ -19,5 +19,7 @@ class ScrollReachedEndTopRatedMovies extends MovieDataEvent {}
 
 class ScrollReachedEndUpcomingMovies extends MovieDataEvent {}
 
+class PullLatestMoviesEvent extends MovieDataEvent {}
+
 class OnErrorEvent extends MovieDataEvent {}
 

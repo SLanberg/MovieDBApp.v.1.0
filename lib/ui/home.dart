@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
 import 'package:sportsbet_task/models/movie_model.dart';
@@ -28,6 +30,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
+    _setUpTimedMoviePull();
+
     _scrollControllerLatest = ScrollController();
     _scrollControllerLatest.addListener(_onScroll);
 
@@ -39,6 +44,13 @@ class _HomePageState extends State<HomePage> {
 
     _scrollControllerUpcoming = ScrollController();
     _scrollControllerUpcoming.addListener(_onScroll);
+  }
+
+  _setUpTimedMoviePull() {
+    Timer.periodic(const Duration(seconds: 30), (timer) {
+      // I will set 60 seconds and will have changing screen every 60 seconds
+      context.read<MovieDataBloc>().add(PullLatestMoviesEvent());
+    });
   }
 
   void _onScroll() {
