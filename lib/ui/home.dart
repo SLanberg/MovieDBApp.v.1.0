@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   late ScrollController _scrollControllerUpcoming;
 
-  late AnimationController _controllerAnimation;
+  bool latestMoviesExpanded = true;
 
   @override
   void initState() {
@@ -92,7 +92,6 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.black,
       body: BlocBuilder<MovieDataBloc, MovieDataState>(
         builder: (context, state) {
-          // context.read<GameDataBloc>().add(GameDataLoading());
           if (state is MovieDataInitialState) {
             context.read<MovieDataBloc>().add(LoadMovieDataEvent());
             return const CircularProgressIndicator();
@@ -302,7 +301,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildLoadMoreIndicator() {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
+      padding: const EdgeInsets.only(left: 0.0, right: 4.0),
       child: Column(
         children: [
           Expanded(
@@ -343,7 +342,7 @@ class _HomePageState extends State<HomePage> {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(left: 8.0),
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: Column(
               children: [
                 Expanded(

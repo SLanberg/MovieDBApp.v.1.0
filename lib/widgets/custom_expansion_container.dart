@@ -25,8 +25,8 @@ class CustomExpansionContainer extends StatelessWidget {
           collapsedTextColor: Colors.black,
           iconColor: Colors.black,
           collapsedIconColor: Colors.black,
-          tilePadding: const EdgeInsets.only(left: 20.0, right: 15.0),
-          childrenPadding: const EdgeInsets.only(left: 15.0, bottom: 20),
+          tilePadding: const EdgeInsets.only(left: 10.0, right: 15.0),
+          childrenPadding: const EdgeInsets.only(left: 0.0, bottom: 20),
           title: Text(title),
           children: <Widget>[
             child,

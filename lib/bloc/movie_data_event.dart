@@ -21,5 +21,7 @@ class ScrollReachedEndUpcomingMovies extends MovieDataEvent {}
 
 class PullLatestMoviesEvent extends MovieDataEvent {}
 
+class TapOnLatestMoviesSectionEvent extends MovieDataEvent {}
+
 class OnErrorEvent extends MovieDataEvent {}
 

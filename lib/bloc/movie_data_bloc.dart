@@ -37,6 +37,8 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
               popularMoviesApiResult: popularResult,
               topRatedApiResult: topRatedApiResult,
               upcomingApiResult: upcomingApiResult,
+
+              isLatestMovieSectionExpanded: true,
               latestMoviesCurrentPage: 1,
               popularMoviesCurrentPage: 1,
               topRatedMoviesCurrentPage: 1,
@@ -183,6 +185,14 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
             } catch (e) {
               emit(MovieDataErrorState());
             }
+          }
+        }
+
+        if (event is TapOnLatestMoviesSectionEvent) {
+          if (state is MovieDataLoadedState) {
+            MovieDataLoadedState currentState = state as MovieDataLoadedState;
+
+            emit(currentState.copyWith(isLatestMovieSectionExpanded: !currentState.isLatestMovieSectionExpanded));
           }
         }
       },

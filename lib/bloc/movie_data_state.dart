@@ -20,6 +20,7 @@ class MovieDataLoadedState extends MovieDataState {
   final int popularMoviesCurrentPage;
   final int topRatedMoviesCurrentPage;
   final int upcomingCurrentPage;
+  final bool isLatestMovieSectionExpanded;
 
   const MovieDataLoadedState({
     required this.latestMoviesApiResult,
@@ -30,6 +31,7 @@ class MovieDataLoadedState extends MovieDataState {
     required this.popularMoviesCurrentPage,
     required this.topRatedMoviesCurrentPage,
     required this.upcomingCurrentPage,
+    required this.isLatestMovieSectionExpanded,
   });
 
   MovieDataLoadedState copyWith({
@@ -41,6 +43,7 @@ class MovieDataLoadedState extends MovieDataState {
     int? popularMoviesCurrentPage,
     int? topRatedMoviesCurrentPage,
     int? upcomingCurrentPage,
+    bool? isLatestMovieSectionExpanded,
   }) {
     return MovieDataLoadedState(
       latestMoviesApiResult: latestMoviesApiResult ?? this.latestMoviesApiResult,
@@ -51,6 +54,7 @@ class MovieDataLoadedState extends MovieDataState {
       popularMoviesCurrentPage: popularMoviesCurrentPage ?? this.popularMoviesCurrentPage,
       topRatedMoviesCurrentPage: topRatedMoviesCurrentPage ?? this.topRatedMoviesCurrentPage,
       upcomingCurrentPage: upcomingCurrentPage ?? this.upcomingCurrentPage,
+        isLatestMovieSectionExpanded: isLatestMovieSectionExpanded ?? this.isLatestMovieSectionExpanded,
     );
   }
 
