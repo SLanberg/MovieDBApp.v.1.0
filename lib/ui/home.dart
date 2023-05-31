@@ -90,11 +90,33 @@ class _HomePageState extends State<HomePage> {
                 state.topRatedApiResult,
                 state.upcomingApiResult);
           } else if (state is MovieDataErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  "Uh, oh something went wrong! Try to refresh the app",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+
             return const Center(
-              child: Text("Uh oh! 😭 Something went wrong!"),
+              child: Text("😭 ERROR"),
             );
           }
-          return const Text("Error");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Uh, oh something went wrong! Try to refresh the app",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+
+          return const Center(
+            child: Text("😭 ERROR"),
+          );
         },
       ),
     );
@@ -130,34 +152,34 @@ class _HomePageState extends State<HomePage> {
           delegate: SliverChildListDelegate(
             [
               CustomExpansionContainer(
-                initiallyExpanded: true,
-                title: 'Latest Movies',
-                child: _buildMovieList(latestApiResult, _scrollControllerLatest)
-              ),
+                  initiallyExpanded: true,
+                  title: 'Latest Movies',
+                  child: _buildMovieList(
+                      latestApiResult, _scrollControllerLatest)),
               const SizedBox(
                 height: 5.0,
               ),
               CustomExpansionContainer(
                   initiallyExpanded: true,
                   title: 'Popular Movies',
-                  child: _buildMovieList(popularApiResult, _scrollControllerPopular)
-              ),
+                  child: _buildMovieList(
+                      popularApiResult, _scrollControllerPopular)),
               const SizedBox(
                 height: 5.0,
               ),
               CustomExpansionContainer(
-                  initiallyExpanded: true,
+                  initiallyExpanded: false,
                   title: 'Top Rated Movies',
-                  child: _buildMovieList(topRatedApiResult, _scrollControllerTopRated)
-              ),
+                  child: _buildMovieList(
+                      topRatedApiResult, _scrollControllerTopRated)),
               const SizedBox(
                 height: 5.0,
               ),
               CustomExpansionContainer(
-                  initiallyExpanded: true,
+                  initiallyExpanded: false,
                   title: 'Upcoming Movies',
-                  child: _buildMovieList(upcomingApiResult, _scrollControllerUpcoming)
-              ),
+                  child: _buildMovieList(
+                      upcomingApiResult, _scrollControllerUpcoming)),
             ],
           ),
         ),
@@ -192,19 +214,18 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: apiResult[imageIndex].posterPath != null
-                                ? Image.network(
-                              "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
-                              height: 490,
-                              fit: BoxFit.cover,
-                            )
-                                : Image.asset(
-                              'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
-                              height: 490,
-                              fit: BoxFit.cover,
-                            )
-                          ),
+                              borderRadius: BorderRadius.circular(10),
+                              child: apiResult[imageIndex].posterPath != null
+                                  ? Image.network(
+                                      "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
+                                      height: 490,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                                      height: 490,
+                                      fit: BoxFit.cover,
+                                    )),
 
                           ClipRRect(
                             child: ListTile(
@@ -282,9 +303,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildMovieList(
-      List<MovieModel> movieList,
-      ScrollController scrollController,
-      ) {
+    List<MovieModel> movieList,
+    ScrollController scrollController,
+  ) {
     return SizedBox(
       height: 300.0,
       child: ListView.builder(
@@ -333,5 +354,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }

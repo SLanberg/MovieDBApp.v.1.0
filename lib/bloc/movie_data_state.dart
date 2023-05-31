@@ -21,7 +21,7 @@ class MovieDataLoadedState extends MovieDataState {
   final int topRatedMoviesCurrentPage;
   final int upcomingCurrentPage;
 
-  MovieDataLoadedState({
+  const MovieDataLoadedState({
     required this.latestMoviesApiResult,
     required this.popularMoviesApiResult,
     required this.topRatedApiResult,
