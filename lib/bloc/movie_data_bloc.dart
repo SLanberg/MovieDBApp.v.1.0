@@ -93,10 +93,50 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
       }
 
       if (event is ScrollReachedEndTopRatedMovies) {
+        if (state is MovieDataLoadedState) {
+          MovieDataLoadedState currentState = state as MovieDataLoadedState;
+
+          try {
+            int nextPage = currentState.topRatedMoviesCurrentPage + 1;
+            List<MovieModel>? apiResultTopRated = await movieRepository.getMovieData(
+              "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=$nextPage&api_key=${dotenv.env['API_KEY']}",
+            );
+
+            if (apiResultTopRated != null) {
+              List<MovieModel> updatedTopRatedMovies = [...currentState.topRatedApiResult, ...apiResultTopRated];
+              emit(currentState.copyWith(
+                topRatedApiResult: updatedTopRatedMovies,
+                topRatedMoviesCurrentPage: nextPage,
+              ));
+            }
+          } catch (e) {
+            emit(MovieDataErrorState());
+          }
+        }
 
       }
 
       if (event is ScrollReachedEndUpcomingMovies) {
+        if (state is MovieDataLoadedState) {
+          MovieDataLoadedState currentState = state as MovieDataLoadedState;
+
+          try {
+            int nextPage = currentState.upcomingCurrentPage + 1;
+            List<MovieModel>? apiResultUpcoming = await movieRepository.getMovieData(
+              "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=$nextPage&api_key=${dotenv.env['API_KEY']}",
+            );
+
+            if (apiResultUpcoming != null) {
+              List<MovieModel> updatedUpcomingMovies = [...currentState.upcomingApiResult, ...apiResultUpcoming];
+              emit(currentState.copyWith(
+                upcomingApiResult: updatedUpcomingMovies,
+                upcomingCurrentPage: nextPage,
+              ));
+            }
+          } catch (e) {
+            emit(MovieDataErrorState());
+          }
+        }
 
       }
 

@@ -17,9 +17,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   late ScrollController _scrollControllerLatest;
+
   late ScrollController _scrollControllerPopular;
+
+  late ScrollController _scrollControllerTopRated;
+
+  late ScrollController _scrollControllerUpcoming;
 
   @override
   void initState() {
@@ -29,22 +33,44 @@ class _HomePageState extends State<HomePage> {
 
     _scrollControllerPopular = ScrollController();
     _scrollControllerPopular.addListener(_onScroll);
+
+    _scrollControllerTopRated = ScrollController();
+    _scrollControllerTopRated.addListener(_onScroll);
+
+    _scrollControllerUpcoming = ScrollController();
+    _scrollControllerUpcoming.addListener(_onScroll);
   }
 
   void _onScroll() {
 
-    if (_scrollControllerLatest.position.atEdge) {
-      // Load more data when reaching the end of the scroll
-      context.read<MovieDataBloc>().add(ScrollReachedEndLatestMovies());
+    if (_scrollControllerLatest.hasClients) {
+      if (_scrollControllerLatest.position.atEdge) {
+        // Load more data when reaching the end of the scroll
+        context.read<MovieDataBloc>().add(ScrollReachedEndLatestMovies());
+      }
     }
 
-    if (_scrollControllerPopular.position.atEdge) {
-      // Load more data when reaching the end of the scroll
-      context.read<MovieDataBloc>().add(ScrollReachedEndPopularMovies());
+    if (_scrollControllerPopular.hasClients) {
+      if (_scrollControllerPopular.position.atEdge) {
+        // Load more data when reaching the end of the scroll
+        context.read<MovieDataBloc>().add(ScrollReachedEndPopularMovies());
+      }
+    }
+
+    if (_scrollControllerTopRated.hasClients) {
+      if (_scrollControllerTopRated.position.atEdge) {
+        // Load more data when reaching the end of the scroll
+        context.read<MovieDataBloc>().add(ScrollReachedEndTopRatedMovies());
+      }
+    }
+
+    if (_scrollControllerUpcoming.hasClients) {
+      if (_scrollControllerUpcoming.position.atEdge) {
+        // Load more data when reaching the end of the scroll
+        context.read<MovieDataBloc>().add(ScrollReachedEndUpcomingMovies());
+      }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -224,9 +250,14 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   height: 300.0,
                   child: ListView.builder(
+                    controller: _scrollControllerTopRated,
                     scrollDirection: Axis.horizontal,
                     itemCount: topRatedApiResult.length,
                     itemBuilder: (context, index) {
+                      if (index == topRatedApiResult.length - 1) {
+                        return _buildLoadMoreIndicator();
+                      }
+
                       return Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Column(
@@ -238,7 +269,7 @@ class _HomePageState extends State<HomePage> {
                                     _showImageDetails(
                                         context, index, topRatedApiResult);
                                   }
-                                  },
+                                },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: Image.network(
@@ -257,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                               alignment: Alignment
                                   .topLeft, // Align the text at the top left
                               child: Text(
-                                '${topRatedApiResult[index].originalTitle}',
+                                '${topRatedApiResult[index].title}',
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign
                                     .start, // Align the text at the start (left)
@@ -278,9 +309,14 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   height: 300.0,
                   child: ListView.builder(
+                    controller: _scrollControllerUpcoming,
                     scrollDirection: Axis.horizontal,
                     itemCount: upcomingApiResult.length,
                     itemBuilder: (context, index) {
+                      if (index == upcomingApiResult.length - 1) {
+                        return _buildLoadMoreIndicator();
+                      }
+
                       return Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Column(
@@ -292,7 +328,8 @@ class _HomePageState extends State<HomePage> {
                                     // _showImageDetails(
                                     //     context, index, upcomingApiResult);
 
-                                    _showImageDetails(context, index, upcomingApiResult);
+                                    _showImageDetails(
+                                        context, index, upcomingApiResult);
                                   }
                                 },
                                 child: ClipRRect(
@@ -313,7 +350,7 @@ class _HomePageState extends State<HomePage> {
                               alignment: Alignment
                                   .topLeft, // Align the text at the top left
                               child: Text(
-                                '${upcomingApiResult[index].originalTitle}',
+                                '${upcomingApiResult[index].title}',
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign
                                     .start, // Align the text at the start (left)
@@ -333,85 +370,87 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _showImageDetails(BuildContext context, int imageIndex, List<MovieModel> apiResult) {
-    showModalBottomSheet(context: context,
+  void _showImageDetails(
+      BuildContext context, int imageIndex, List<MovieModel> apiResult) {
+    showModalBottomSheet(
+        context: context,
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(10.0),
-                ),
-
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(10.0),
+          ),
         ),
         builder: (context) => DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.75,
-          maxChildSize: 0.75,
-          minChildSize: 0.32,
-          builder: (context, scrollController) => SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 30.0,),
+              expand: false,
+              initialChildSize: 0.75,
+              maxChildSize: 0.75,
+              minChildSize: 0.32,
+              builder: (context, scrollController) => SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    SizedBox(
+                      width: 350,
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              'http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}',
+                              height: 500,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
 
-                SizedBox(
-                  width: 350,
-                  child: Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          'http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}',
-                          height: 500,
-                          fit: BoxFit.fill,
-                        ),
+                          ClipRRect(
+                            child: ListTile(
+                              leading: const Icon(Icons.info),
+                              title: Text('${apiResult[imageIndex].title}'),
+                              onTap: () {
+                                // Navigator.pop(context); // Close the bottom sheet
+                                // Handle "View Details" action
+                                _handleViewDetails(imageIndex, apiResult);
+                              },
+                            ),
+                          ),
+
+                          ListTile(
+                            leading: const Icon(Icons.calendar_month),
+                            title: apiResult[imageIndex].releaseDate != null
+                                ? Text(DateFormat('yyyy-MM-dd')
+                                    .format(apiResult[imageIndex].releaseDate!))
+                                : null,
+                            onTap: () {
+                              // Navigator.pop(context); // Close the bottom sheet
+                              // Handle "View Details" action
+                              _handleViewDetails(imageIndex, apiResult);
+                            },
+                          ),
+                          ListTile(
+                              leading:
+                                  const Icon(Icons.contact_support_rounded),
+                              title: apiResult[imageIndex].overview != null
+                                  ? Text('${apiResult[imageIndex].overview}')
+                                  : null),
+
+                          // In the response, if video is available show a play icon
+                          // (use any free resource available).
+                          // Clicking on this icon snackbar should appear with movie name.
+                          ListTile(
+                              leading: apiResult[imageIndex].video != null &&
+                                      apiResult[imageIndex].video != false
+                                  ? const Icon(Icons.play_arrow)
+                                  : null),
+                        ],
                       ),
-
-                      ClipRRect(
-                        child: ListTile(
-                          leading: const Icon(Icons.info),
-                          title: Text('${apiResult[imageIndex].title}'),
-                          onTap: () {
-                            // Navigator.pop(context); // Close the bottom sheet
-                            // Handle "View Details" action
-                            _handleViewDetails(imageIndex, apiResult);
-                          },
-                        ),
-                      ),
-
-                      ListTile(
-                        leading: const Icon(Icons.calendar_month),
-                        title: apiResult[imageIndex].releaseDate != null
-                            ? Text(DateFormat('yyyy-MM-dd')
-                            .format(apiResult[imageIndex].releaseDate!))
-                            : null,
-                        onTap: () {
-                          // Navigator.pop(context); // Close the bottom sheet
-                          // Handle "View Details" action
-                          _handleViewDetails(imageIndex, apiResult);
-                        },
-                      ),
-                      ListTile(
-                          leading: const Icon(Icons.contact_support_rounded),
-                          title: apiResult[imageIndex].overview != null
-                              ? Text('${apiResult[imageIndex].overview}')
-                              : null),
-
-                      // In the response, if video is available show a play icon
-                      // (use any free resource available).
-                      // Clicking on this icon snackbar should appear with movie name.
-                      ListTile(
-                          leading: apiResult[imageIndex].video != null &&
-                              apiResult[imageIndex].video != false
-                              ? const Icon(Icons.play_arrow)
-                              : null),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        )
-    );
+              ),
+            ));
   }
 
   Widget _buildLoadMoreIndicator() {
