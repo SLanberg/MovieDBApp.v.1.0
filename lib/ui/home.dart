@@ -341,7 +341,7 @@ class _HomePageState extends State<HomePage> {
                         fit: BoxFit.cover,
                       ) : Image.asset(
                         'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
-                        height: 490,
+                        width: 180,
                         fit: BoxFit.cover,
                       ),
                     ),
