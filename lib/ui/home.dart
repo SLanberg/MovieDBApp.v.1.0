@@ -42,7 +42,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onScroll() {
-
     if (_scrollControllerLatest.hasClients) {
       if (_scrollControllerLatest.position.atEdge) {
         // Load more data when reaching the end of the scroll
@@ -334,8 +333,14 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(
+                                  child: upcomingApiResult[index].posterPath != null
+                                      ? Image.network(
                                     "http://image.tmdb.org/t/p/w500/${upcomingApiResult[index].posterPath}",
+                                    width: 180,
+                                    fit: BoxFit.cover,
+                                  )
+                                      : Image.asset(
+                                    'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
                                     width: 180,
                                     fit: BoxFit.cover,
                                   ),
@@ -398,11 +403,17 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              'http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}',
-                              height: 500,
-                              fit: BoxFit.fill,
-                            ),
+                            child: apiResult[imageIndex].posterPath != null
+                                ? Image.network(
+                              "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
+                              height: 490,
+                              fit: BoxFit.cover,
+                            )
+                                : Image.asset(
+                              'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                              height: 490,
+                              fit: BoxFit.cover,
+                            )
                           ),
 
                           ClipRRect(
