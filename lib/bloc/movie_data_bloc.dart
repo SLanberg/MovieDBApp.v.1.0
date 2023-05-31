@@ -158,16 +158,24 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
             MovieDataLoadedState currentState = state as MovieDataLoadedState;
 
             try {
-              List<MovieModel>? apiResultLatest = await movieRepository.getMovieData(
+              List<MovieModel>? apiResultLatest =
+                  await movieRepository.getMovieData(
                 "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${currentState.latestMoviesCurrentPage}&api_key=${dotenv.env['API_KEY']}",
               );
               if (apiResultLatest != null) {
                 // create a set of movie ids from the current state
-                Set<int?> movieIds = currentState.latestMoviesApiResult.map((movie) => movie.id).toSet();
+                Set<int?> movieIds = currentState.latestMoviesApiResult
+                    .map((movie) => movie.id)
+                    .toSet();
 
-                List<MovieModel> newMovies = apiResultLatest.where((movie) => !movieIds.contains(movie.id)).toList();
+                List<MovieModel> newMovies = apiResultLatest
+                    .where((movie) => !movieIds.contains(movie.id))
+                    .toList();
 
-                List<MovieModel> updatedLatestMovies = [...newMovies, ...currentState.latestMoviesApiResult];
+                List<MovieModel> updatedLatestMovies = [
+                  ...newMovies,
+                  ...currentState.latestMoviesApiResult
+                ];
                 emit(currentState.copyWith(
                   latestMoviesApiResult: updatedLatestMovies,
                 ));
@@ -176,7 +184,6 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
               emit(MovieDataErrorState());
             }
           }
-
         }
       },
     );

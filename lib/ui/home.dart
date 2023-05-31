@@ -27,11 +27,14 @@ class _HomePageState extends State<HomePage> {
 
   late ScrollController _scrollControllerUpcoming;
 
+  late AnimationController _controllerAnimation;
+
   @override
   void initState() {
     super.initState();
 
     _setUpTimedMoviePull();
+
 
     _scrollControllerLatest = ScrollController();
     _scrollControllerLatest.addListener(_onScroll);
@@ -96,7 +99,7 @@ class _HomePageState extends State<HomePage> {
           } else if (state is MovieDataLoadingState) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is MovieDataLoadedState) {
-            return buildGameModel(
+            return buildHomeSections(
                 state.latestMoviesApiResult,
                 state.popularMoviesApiResult,
                 state.topRatedApiResult,
@@ -105,7 +108,7 @@ class _HomePageState extends State<HomePage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  "Uh, oh something went wrong! Try to refresh the app",
+                  "Something went wrong! Try to refresh the app",
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 backgroundColor: Colors.red,
@@ -119,7 +122,7 @@ class _HomePageState extends State<HomePage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                "Uh, oh something went wrong! Try to refresh the app",
+                "Something went wrong! Try to refresh the app",
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               backgroundColor: Colors.red,
@@ -134,17 +137,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildGameModel(
+  Widget buildHomeSections(
     List<MovieModel> latestApiResult,
     List<MovieModel> popularApiResult,
     List<MovieModel> topRatedApiResult,
     List<MovieModel> upcomingApiResult,
   ) {
     return CustomScrollView(
+
       slivers: [
         SliverAppBar(
           backgroundColor: Colors.black,
           expandedHeight: 550.0,
+
           // pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
@@ -213,8 +218,9 @@ class _HomePageState extends State<HomePage> {
               expand: false,
               initialChildSize: 0.75,
               maxChildSize: 0.75,
-              minChildSize: 0.32,
+              minChildSize: 0.50,
               builder: (context, scrollController) => SingleChildScrollView(
+                controller: scrollController,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
