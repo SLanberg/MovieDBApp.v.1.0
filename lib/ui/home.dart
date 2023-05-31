@@ -100,8 +100,8 @@ class _HomePageState extends State<HomePage> {
               ),
             );
 
-            return const Center(
-              child: Text("😭 ERROR"),
+            return Center(
+              child: Text("😭 ERROR", style: Theme.of(context).textTheme.headlineMedium,),
             );
           }
           ScaffoldMessenger.of(context).showSnackBar(
@@ -114,8 +114,8 @@ class _HomePageState extends State<HomePage> {
             ),
           );
 
-          return const Center(
-            child: Text("😭 ERROR"),
+          return Center(
+            child: Text("😭 ERROR", style: Theme.of(context).textTheme.headlineMedium),
           );
         },
       ),
