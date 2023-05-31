@@ -101,8 +101,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildGameModel(
-    List<MovieModel> apiResult,
-    List<MovieModel> popularResult,
+    List<MovieModel> latestApiResult,
+    List<MovieModel> popularApiResult,
     List<MovieModel> topRatedApiResult,
     List<MovieModel> upcomingApiResult,
   ) {
@@ -132,241 +132,31 @@ class _HomePageState extends State<HomePage> {
               CustomExpansionContainer(
                 initiallyExpanded: true,
                 title: 'Latest Movies',
-                child: SizedBox(
-                  height: 300.0,
-                  child: ListView.builder(
-                    controller: _scrollControllerLatest,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: apiResult.length,
-                    itemBuilder: (context, index) {
-                      if (index == apiResult.length - 1) {
-                        return _buildLoadMoreIndicator();
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  _showImageDetails(context, index, apiResult);
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(
-                                    "http://image.tmdb.org/t/p/w500/${apiResult[index].posterPath}",
-                                    width: 180,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Container(
-                              width: 160,
-                              height:
-                                  40, // Increase the height to make the container higher
-                              alignment: Alignment
-                                  .topLeft, // Align the text at the top left
-                              child: Text(
-                                '${apiResult[index].originalTitle}',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                                textAlign: TextAlign
-                                    .start, // Align the text at the start (left)
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                child: _buildMovieList(latestApiResult, _scrollControllerLatest)
               ),
               const SizedBox(
                 height: 5.0,
               ),
               CustomExpansionContainer(
-                initiallyExpanded: true,
-                title: 'Popular Movies',
-                child: SizedBox(
-                  height: 300.0,
-                  child: ListView.builder(
-                    controller: _scrollControllerPopular,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: popularResult.length,
-                    itemBuilder: (context, index) {
-                      if (index == popularResult.length - 1) {
-                        return _buildLoadMoreIndicator();
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  _showImageDetails(
-                                      context, index, popularResult);
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(
-                                    "http://image.tmdb.org/t/p/w500/${popularResult[index].posterPath}",
-                                    width: 180,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Container(
-                              width: 160,
-                              height:
-                                  40, // Increase the height to make the container higher
-                              alignment: Alignment
-                                  .topLeft, // Align the text at the top left
-                              child: Text(
-                                '${popularResult[index].title}',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                                textAlign: TextAlign
-                                    .start, // Align the text at the start (left)
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                  initiallyExpanded: true,
+                  title: 'Popular Movies',
+                  child: _buildMovieList(popularApiResult, _scrollControllerPopular)
               ),
               const SizedBox(
                 height: 5.0,
               ),
               CustomExpansionContainer(
-                title: 'Top Rated Movies',
-                child: SizedBox(
-                  height: 300.0,
-                  child: ListView.builder(
-                    controller: _scrollControllerTopRated,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: topRatedApiResult.length,
-                    itemBuilder: (context, index) {
-                      if (index == topRatedApiResult.length - 1) {
-                        return _buildLoadMoreIndicator();
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (topRatedApiResult != null) {
-                                    _showImageDetails(
-                                        context, index, topRatedApiResult);
-                                  }
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(
-                                    "http://image.tmdb.org/t/p/w500/${topRatedApiResult[index].posterPath}",
-                                    width: 180,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Container(
-                              width: 160,
-                              height:
-                                  40, // Increase the height to make the container higher
-                              alignment: Alignment
-                                  .topLeft, // Align the text at the top left
-                              child: Text(
-                                '${topRatedApiResult[index].title}',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                                textAlign: TextAlign
-                                    .start, // Align the text at the start (left)
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                  initiallyExpanded: true,
+                  title: 'Top Rated Movies',
+                  child: _buildMovieList(topRatedApiResult, _scrollControllerTopRated)
               ),
               const SizedBox(
                 height: 5.0,
               ),
               CustomExpansionContainer(
-                title: 'Upcoming Movies',
-                child: SizedBox(
-                  height: 300.0,
-                  child: ListView.builder(
-                    controller: _scrollControllerUpcoming,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: upcomingApiResult.length,
-                    itemBuilder: (context, index) {
-                      if (index == upcomingApiResult.length - 1) {
-                        return _buildLoadMoreIndicator();
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (upcomingApiResult != null) {
-                                    // _showImageDetails(
-                                    //     context, index, upcomingApiResult);
-
-                                    _showImageDetails(
-                                        context, index, upcomingApiResult);
-                                  }
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: upcomingApiResult[index].posterPath != null
-                                      ? Image.network(
-                                    "http://image.tmdb.org/t/p/w500/${upcomingApiResult[index].posterPath}",
-                                    width: 180,
-                                    fit: BoxFit.cover,
-                                  )
-                                      : Image.asset(
-                                    'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
-                                    width: 180,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Container(
-                              width: 160,
-                              height:
-                                  40, // Increase the height to make the container higher
-                              alignment: Alignment
-                                  .topLeft, // Align the text at the top left
-                              child: Text(
-                                '${upcomingApiResult[index].title}',
-                                style: Theme.of(context).textTheme.bodyLarge,
-                                textAlign: TextAlign
-                                    .start, // Align the text at the start (left)
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                  initiallyExpanded: true,
+                  title: 'Upcoming Movies',
+                  child: _buildMovieList(upcomingApiResult, _scrollControllerUpcoming)
               ),
             ],
           ),
@@ -490,4 +280,58 @@ class _HomePageState extends State<HomePage> {
       print('View Details for Image ${imageIndex + 1}');
     }
   }
+
+  Widget _buildMovieList(
+      List<MovieModel> movieList,
+      ScrollController scrollController,
+      ) {
+    return SizedBox(
+      height: 300.0,
+      child: ListView.builder(
+        controller: scrollController,
+        scrollDirection: Axis.horizontal,
+        itemCount: movieList.length,
+        itemBuilder: (context, index) {
+          if (index == movieList.length - 1) {
+            return _buildLoadMoreIndicator();
+          }
+
+          return Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      _showImageDetails(context, index, movieList);
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.network(
+                        "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
+                        width: 180,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Container(
+                  width: 160,
+                  height: 40,
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    '${movieList[index].title}',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
 }

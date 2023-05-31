@@ -44,7 +44,6 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         }
       }
 
-
       if (event is ScrollReachedEndLatestMovies) {
         if (state is MovieDataLoadedState) {
           MovieDataLoadedState currentState = state as MovieDataLoadedState;
@@ -56,7 +55,10 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
             );
 
             if (apiResult != null) {
-              List<MovieModel> updatedLatestMovies = [...currentState.latestMoviesApiResult, ...apiResult];
+              List<MovieModel> updatedLatestMovies = [
+                ...currentState.latestMoviesApiResult,
+                ...apiResult
+              ];
               emit(currentState.copyWith(
                 latestMoviesApiResult: updatedLatestMovies,
                 latestMoviesCurrentPage: nextPage,
@@ -74,12 +76,16 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
 
           try {
             int nextPagePopular = currentState.popularMoviesCurrentPage + 1;
-            List<MovieModel>? apiResultPopular = await movieRepository.getMovieData(
+            List<MovieModel>? apiResultPopular =
+                await movieRepository.getMovieData(
               "https://api.themoviedb.org/3/movie/popular?language=en-US&page=$nextPagePopular&api_key=${dotenv.env['API_KEY']}",
             );
 
             if (apiResultPopular != null) {
-              List<MovieModel> updatedPopularMovies = [...currentState.popularMoviesApiResult, ...apiResultPopular];
+              List<MovieModel> updatedPopularMovies = [
+                ...currentState.popularMoviesApiResult,
+                ...apiResultPopular
+              ];
               emit(currentState.copyWith(
                 popularMoviesApiResult: updatedPopularMovies,
                 popularMoviesCurrentPage: nextPagePopular,
@@ -89,7 +95,6 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
             emit(MovieDataErrorState());
           }
         }
-
       }
 
       if (event is ScrollReachedEndTopRatedMovies) {
@@ -98,12 +103,16 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
 
           try {
             int nextPage = currentState.topRatedMoviesCurrentPage + 1;
-            List<MovieModel>? apiResultTopRated = await movieRepository.getMovieData(
+            List<MovieModel>? apiResultTopRated =
+                await movieRepository.getMovieData(
               "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=$nextPage&api_key=${dotenv.env['API_KEY']}",
             );
 
             if (apiResultTopRated != null) {
-              List<MovieModel> updatedTopRatedMovies = [...currentState.topRatedApiResult, ...apiResultTopRated];
+              List<MovieModel> updatedTopRatedMovies = [
+                ...currentState.topRatedApiResult,
+                ...apiResultTopRated
+              ];
               emit(currentState.copyWith(
                 topRatedApiResult: updatedTopRatedMovies,
                 topRatedMoviesCurrentPage: nextPage,
@@ -113,7 +122,6 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
             emit(MovieDataErrorState());
           }
         }
-
       }
 
       if (event is ScrollReachedEndUpcomingMovies) {
@@ -122,12 +130,16 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
 
           try {
             int nextPage = currentState.upcomingCurrentPage + 1;
-            List<MovieModel>? apiResultUpcoming = await movieRepository.getMovieData(
+            List<MovieModel>? apiResultUpcoming =
+                await movieRepository.getMovieData(
               "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=$nextPage&api_key=${dotenv.env['API_KEY']}",
             );
 
             if (apiResultUpcoming != null) {
-              List<MovieModel> updatedUpcomingMovies = [...currentState.upcomingApiResult, ...apiResultUpcoming];
+              List<MovieModel> updatedUpcomingMovies = [
+                ...currentState.upcomingApiResult,
+                ...apiResultUpcoming
+              ];
               emit(currentState.copyWith(
                 upcomingApiResult: updatedUpcomingMovies,
                 upcomingCurrentPage: nextPage,
@@ -137,12 +149,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
             emit(MovieDataErrorState());
           }
         }
-
       }
-
-
-
-
     });
   }
 }
