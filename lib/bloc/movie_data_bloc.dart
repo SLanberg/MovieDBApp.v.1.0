@@ -49,9 +49,9 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
           MovieDataLoadedState currentState = state as MovieDataLoadedState;
 
           try {
-            int nextPage = currentState.latestMoviesCurrentPage + 1;
+            int nextPageLatest = currentState.latestMoviesCurrentPage + 1;
             List<MovieModel>? apiResult = await movieRepository.getMovieData(
-              "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=$nextPage&api_key=${dotenv.env['API_KEY']}",
+              "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=$nextPageLatest&api_key=${dotenv.env['API_KEY']}",
             );
 
             if (apiResult != null) {
@@ -61,7 +61,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
               ];
               emit(currentState.copyWith(
                 latestMoviesApiResult: updatedLatestMovies,
-                latestMoviesCurrentPage: nextPage,
+                latestMoviesCurrentPage: nextPageLatest,
               ));
             }
           } catch (e) {
@@ -102,10 +102,10 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
           MovieDataLoadedState currentState = state as MovieDataLoadedState;
 
           try {
-            int nextPage = currentState.topRatedMoviesCurrentPage + 1;
+            int nextPageTopRated = currentState.topRatedMoviesCurrentPage + 1;
             List<MovieModel>? apiResultTopRated =
                 await movieRepository.getMovieData(
-              "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=$nextPage&api_key=${dotenv.env['API_KEY']}",
+              "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=$nextPageTopRated&api_key=${dotenv.env['API_KEY']}",
             );
 
             if (apiResultTopRated != null) {
@@ -115,7 +115,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
               ];
               emit(currentState.copyWith(
                 topRatedApiResult: updatedTopRatedMovies,
-                topRatedMoviesCurrentPage: nextPage,
+                topRatedMoviesCurrentPage: nextPageTopRated,
               ));
             }
           } catch (e) {
@@ -129,10 +129,10 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
           MovieDataLoadedState currentState = state as MovieDataLoadedState;
 
           try {
-            int nextPage = currentState.upcomingCurrentPage + 1;
+            int nextPageUpcoming = currentState.upcomingCurrentPage + 1;
             List<MovieModel>? apiResultUpcoming =
                 await movieRepository.getMovieData(
-              "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=$nextPage&api_key=${dotenv.env['API_KEY']}",
+              "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=$nextPageUpcoming&api_key=${dotenv.env['API_KEY']}",
             );
 
             if (apiResultUpcoming != null) {
@@ -142,7 +142,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
               ];
               emit(currentState.copyWith(
                 upcomingApiResult: updatedUpcomingMovies,
-                upcomingCurrentPage: nextPage,
+                upcomingCurrentPage: nextPageUpcoming,
               ));
             }
           } catch (e) {
