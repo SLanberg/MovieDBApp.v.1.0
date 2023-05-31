@@ -167,7 +167,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
 
                 List<MovieModel> newMovies = apiResultLatest.where((movie) => !movieIds.contains(movie.id)).toList();
 
-                List<MovieModel> updatedLatestMovies = [...currentState.latestMoviesApiResult, ...newMovies];
+                List<MovieModel> updatedLatestMovies = [...newMovies, ...currentState.latestMoviesApiResult];
                 emit(currentState.copyWith(
                   latestMoviesApiResult: updatedLatestMovies,
                 ));
