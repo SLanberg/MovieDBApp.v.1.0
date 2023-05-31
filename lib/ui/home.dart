@@ -225,7 +225,8 @@ class _HomePageState extends State<HomePage> {
                                       'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
                                       height: 490,
                                       fit: BoxFit.cover,
-                                    )),
+                                    ),
+                          ),
 
                           ClipRRect(
                             child: ListTile(
@@ -334,9 +335,13 @@ class _HomePageState extends State<HomePage> {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      child: Image.network(
+                      child: movieList[index].posterPath != null ? Image.network(
                         "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
                         width: 180,
+                        fit: BoxFit.cover,
+                      ) : Image.asset(
+                        'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                        height: 490,
                         fit: BoxFit.cover,
                       ),
                     ),
