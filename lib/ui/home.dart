@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                      'http://image.tmdb.org/t/p/w500/bPdE1CbdP8Bf1NMg9PF4QkPR9oZ.jpg'),
+                      'http://image.tmdb.org/t/p/w500/${latestApiResult[Random().nextInt(latestApiResult.length)].posterPath}'),
                   // Replace with your image path
                   fit: BoxFit.fill,
                 ),
