@@ -50,6 +50,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
 
           try {
             int nextPageLatest = currentState.latestMoviesCurrentPage + 1;
+
             List<MovieModel>? apiResult = await movieRepository.getMovieData(
               "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=$nextPageLatest&api_key=${dotenv.env['API_KEY']}",
             );

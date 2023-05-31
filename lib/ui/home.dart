@@ -43,28 +43,28 @@ class _HomePageState extends State<HomePage> {
 
   void _onScroll() {
     if (_scrollControllerLatest.hasClients) {
-      if (_scrollControllerLatest.position.atEdge) {
+      if (_scrollControllerLatest.position.atEdge && _scrollControllerLatest.position.pixels > 0) {
         // Load more data when reaching the end of the scroll
         context.read<MovieDataBloc>().add(ScrollReachedEndLatestMovies());
       }
     }
 
     if (_scrollControllerPopular.hasClients) {
-      if (_scrollControllerPopular.position.atEdge) {
+      if (_scrollControllerPopular.position.atEdge && _scrollControllerPopular.position.pixels > 0) {
         // Load more data when reaching the end of the scroll
         context.read<MovieDataBloc>().add(ScrollReachedEndPopularMovies());
       }
     }
 
     if (_scrollControllerTopRated.hasClients) {
-      if (_scrollControllerTopRated.position.atEdge) {
+      if (_scrollControllerTopRated.position.atEdge && _scrollControllerTopRated.position.pixels > 0) {
         // Load more data when reaching the end of the scroll
         context.read<MovieDataBloc>().add(ScrollReachedEndTopRatedMovies());
       }
     }
 
     if (_scrollControllerUpcoming.hasClients) {
-      if (_scrollControllerUpcoming.position.atEdge) {
+      if (_scrollControllerUpcoming.position.atEdge && _scrollControllerUpcoming.position.pixels > 0) {
         // Load more data when reaching the end of the scroll
         context.read<MovieDataBloc>().add(ScrollReachedEndUpcomingMovies());
       }
