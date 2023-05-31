@@ -238,6 +238,12 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),
                           ),
+                          ListTile(
+                              leading:
+                              const Icon(Icons.star_border),
+                              title: apiResult[imageIndex].voteAverage != null
+                                  ? Text('${apiResult[imageIndex].voteAverage}')
+                                  : null),
 
                           ListTile(
                             leading: const Icon(Icons.calendar_month),
