@@ -27,14 +27,14 @@ class _HomePageState extends State<HomePage> {
 
   late ScrollController _scrollControllerUpcoming;
 
+  Timer? movieTimer;
+
   bool latestMoviesExpanded = true;
 
   @override
   void initState() {
     super.initState();
-
     _setUpTimedMoviePull();
-
 
     _scrollControllerLatest = ScrollController();
     _scrollControllerLatest.addListener(_onScroll);
@@ -50,10 +50,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   _setUpTimedMoviePull() {
-    Timer.periodic(const Duration(seconds: 30), (timer) {
+    movieTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
       // I will set 60 seconds and will have changing screen every 60 seconds
       context.read<MovieDataBloc>().add(PullLatestMoviesEvent());
     });
+  }
+
+  // Stop the timer when CustomExpansionContainer is closed
+  void stopMovieTimer() {
+    movieTimer?.cancel();
   }
 
   void _onScroll() {
@@ -168,16 +173,22 @@ class _HomePageState extends State<HomePage> {
           delegate: SliverChildListDelegate(
             [
               CustomExpansionContainer(
-                event: TapOnLatestSection(),
+                onExpansionChanged: (initiallyExpanded) {
+                  if (!initiallyExpanded) {
+                    stopMovieTimer();
+                  } else {
+                    _setUpTimedMoviePull();
+                  }
+                },
                   initiallyExpanded: true,
                   title: 'Latest Movies',
                   child: _buildMovieList(
-                      latestApiResult, _scrollControllerLatest)),
+                      latestApiResult, _scrollControllerLatest,
+                  )),
               const SizedBox(
                 height: 5.0,
               ),
               CustomExpansionContainer(
-                  event: TapOnTopRatedSectionEvent(),
                   initiallyExpanded: true,
                   title: 'Popular Movies',
                   child: _buildMovieList(
@@ -186,7 +197,13 @@ class _HomePageState extends State<HomePage> {
                 height: 5.0,
               ),
               CustomExpansionContainer(
-                  event: TapOnTopRatedSectionEvent(),
+                  onExpansionChanged: (initiallyExpanded) {
+                    if (initiallyExpanded) {
+                      context.read<MovieDataBloc>().add(
+                          TapOnTopRatedSectionEvent()
+                      );
+                    }
+                  },
                   initiallyExpanded: false,
                   title: 'Top Rated Movies',
                   child: _buildMovieList(
@@ -195,7 +212,12 @@ class _HomePageState extends State<HomePage> {
                 height: 5.0,
               ),
               CustomExpansionContainer(
-                  event: TapOnUpcomingSectionEvent(),
+                  onExpansionChanged: (initiallyExpanded) {
+                    context.read<MovieDataBloc>().add(
+                        TapOnUpcomingSectionEvent()
+                    );
+
+                  },
                   initiallyExpanded: false,
                   title: 'Upcoming Movies',
                   child: _buildMovieList(

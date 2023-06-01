@@ -1,4 +1,3 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,15 +7,15 @@ class CustomExpansionContainer extends StatelessWidget {
   final String title;
   final Widget child;
   final bool initiallyExpanded;
-  final event;
+  final Function(bool)? onExpansionChanged;
 
   const CustomExpansionContainer({
-    super.key,
+    Key? key,
     required this.title,
     required this.child,
     this.initiallyExpanded = false,
-    required this.event,
-  });
+    this.onExpansionChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +24,7 @@ class CustomExpansionContainer extends StatelessWidget {
       child: Container(
         color: Colors.white,
         child: ExpansionTile(
-          onExpansionChanged: (initiallyExpanded) {
-            context.read<MovieDataBloc>().add(event);
-          },
+          onExpansionChanged: onExpansionChanged,
           initiallyExpanded: initiallyExpanded,
           textColor: Colors.black,
           collapsedTextColor: Colors.black,
