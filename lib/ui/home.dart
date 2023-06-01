@@ -168,6 +168,7 @@ class _HomePageState extends State<HomePage> {
           delegate: SliverChildListDelegate(
             [
               CustomExpansionContainer(
+                event: TapOnLatestSection(),
                   initiallyExpanded: true,
                   title: 'Latest Movies',
                   child: _buildMovieList(
@@ -176,6 +177,7 @@ class _HomePageState extends State<HomePage> {
                 height: 5.0,
               ),
               CustomExpansionContainer(
+                  event: TapOnTopRatedSectionEvent(),
                   initiallyExpanded: true,
                   title: 'Popular Movies',
                   child: _buildMovieList(
@@ -184,6 +186,7 @@ class _HomePageState extends State<HomePage> {
                 height: 5.0,
               ),
               CustomExpansionContainer(
+                  event: TapOnTopRatedSectionEvent(),
                   initiallyExpanded: false,
                   title: 'Top Rated Movies',
                   child: _buildMovieList(
@@ -192,6 +195,7 @@ class _HomePageState extends State<HomePage> {
                 height: 5.0,
               ),
               CustomExpansionContainer(
+                  event: TapOnUpcomingSectionEvent(),
                   initiallyExpanded: false,
                   title: 'Upcoming Movies',
                   child: _buildMovieList(
