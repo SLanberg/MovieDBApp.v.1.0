@@ -244,82 +244,99 @@ class _HomePageState extends State<HomePage> {
               initialChildSize: 0.75,
               maxChildSize: 1,
               minChildSize: 0.50,
-              builder: (context, scrollController) => SingleChildScrollView(
-                controller: scrollController,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 30.0,
+              builder: (context, scrollController) => Scaffold(
+                body: Center(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        SizedBox(
+                          width: 350,
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: apiResult[imageIndex].posterPath != null
+                                      ? Image.network(
+                                          "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
+                                          height: 490,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.asset(
+                                          'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                                          height: 490,
+                                          fit: BoxFit.cover,
+                                        ),
+                              ),
+
+                              ClipRRect(
+                                child: ListTile(
+                                  leading: const Icon(Icons.info),
+                                  title: Text('${apiResult[imageIndex].title}'),
+                                  onTap: () {
+                                    // Navigator.pop(context); // Close the bottom sheet
+                                    // Handle "View Details" action
+                                    _handleViewDetails(imageIndex, apiResult);
+                                  },
+                                ),
+                              ),
+                              ListTile(
+                                  leading:
+                                  const Icon(Icons.star_border),
+                                  title: apiResult[imageIndex].voteAverage != null
+                                      ? Text('${apiResult[imageIndex].voteAverage}')
+                                      : null),
+
+                              ListTile(
+                                leading: const Icon(Icons.calendar_month),
+                                title: apiResult[imageIndex].releaseDate != null
+                                    ? Text(DateFormat('yyyy-MM-dd')
+                                        .format(apiResult[imageIndex].releaseDate!))
+                                    : null,
+                                onTap: () {
+                                  // Navigator.pop(context); // Close the bottom sheet
+                                  // Handle "View Details" action
+                                  _handleViewDetails(imageIndex, apiResult);
+                                },
+                              ),
+                              ListTile(
+                                  leading:
+                                      const Icon(Icons.contact_support_rounded),
+                                  title: apiResult[imageIndex].overview != null
+                                      ? Text('${apiResult[imageIndex].overview}')
+                                      : null),
+
+                              // In the response, if video is available show a play icon
+                              // (use any free resource available).
+                              // Clicking on this icon snackbar should appear with movie name.
+                              ListTile(
+                                  leading: apiResult[imageIndex].video != null ||
+                                          apiResult[imageIndex].video != false
+                                      ? GestureDetector(
+                                      onTap: () {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              "${apiResult[imageIndex].title}",
+                                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                                            ),
+                                            backgroundColor: Colors.green,
+                                            duration: const Duration(seconds: 1),
+                                          ),
+                                        );
+                                      },
+                                      child: const Icon(Icons.play_arrow))
+                                      : null),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      width: 350,
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: apiResult[imageIndex].posterPath != null
-                                  ? Image.network(
-                                      "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
-                                      height: 490,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.asset(
-                                      'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
-                                      height: 490,
-                                      fit: BoxFit.cover,
-                                    ),
-                          ),
-
-                          ClipRRect(
-                            child: ListTile(
-                              leading: const Icon(Icons.info),
-                              title: Text('${apiResult[imageIndex].title}'),
-                              onTap: () {
-                                // Navigator.pop(context); // Close the bottom sheet
-                                // Handle "View Details" action
-                                _handleViewDetails(imageIndex, apiResult);
-                              },
-                            ),
-                          ),
-                          ListTile(
-                              leading:
-                              const Icon(Icons.star_border),
-                              title: apiResult[imageIndex].voteAverage != null
-                                  ? Text('${apiResult[imageIndex].voteAverage}')
-                                  : null),
-
-                          ListTile(
-                            leading: const Icon(Icons.calendar_month),
-                            title: apiResult[imageIndex].releaseDate != null
-                                ? Text(DateFormat('yyyy-MM-dd')
-                                    .format(apiResult[imageIndex].releaseDate!))
-                                : null,
-                            onTap: () {
-                              // Navigator.pop(context); // Close the bottom sheet
-                              // Handle "View Details" action
-                              _handleViewDetails(imageIndex, apiResult);
-                            },
-                          ),
-                          ListTile(
-                              leading:
-                                  const Icon(Icons.contact_support_rounded),
-                              title: apiResult[imageIndex].overview != null
-                                  ? Text('${apiResult[imageIndex].overview}')
-                                  : null),
-
-                          // In the response, if video is available show a play icon
-                          // (use any free resource available).
-                          // Clicking on this icon snackbar should appear with movie name.
-                          ListTile(
-                              leading: apiResult[imageIndex].video != null &&
-                                      apiResult[imageIndex].video != false
-                                  ? const Icon(Icons.play_arrow)
-                                  : null),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ));
