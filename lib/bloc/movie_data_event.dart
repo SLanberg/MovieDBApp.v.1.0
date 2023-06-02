@@ -27,6 +27,6 @@ class TapOnTopRatedSectionEvent extends MovieDataEvent {}
 
 class TapOnUpcomingSectionEvent extends MovieDataEvent {}
 
-
 class OnErrorEvent extends MovieDataEvent {}
 
+class ClickToSeeMovieDetails extends MovieDataEvent {}

@@ -219,6 +219,13 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
           }
         }
 
+        if (event is ClickToSeeMovieDetails) {
+          if (state is MovieDataLoadedState) {
+            MovieDataLoadedState currentState = state as MovieDataLoadedState;
+
+          }
+        }
+
       },
     );
   }

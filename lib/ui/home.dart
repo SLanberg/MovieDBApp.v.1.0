@@ -297,12 +297,10 @@ class _HomePageState extends State<HomePage> {
                                     ? Text(DateFormat('yyyy-MM-dd')
                                         .format(apiResult[imageIndex].releaseDate!))
                                     : null,
-                                onTap: () {
-                                  // Navigator.pop(context); // Close the bottom sheet
-                                  // Handle "View Details" action
-                                  _handleViewDetails(imageIndex, apiResult);
-                                },
                               ),
+
+
+
                               ListTile(
                                   leading:
                                       const Icon(Icons.contact_support_rounded),
@@ -314,7 +312,7 @@ class _HomePageState extends State<HomePage> {
                               // (use any free resource available).
                               // Clicking on this icon snackbar should appear with movie name.
                               ListTile(
-                                  leading: apiResult[imageIndex].video != null ||
+                                  leading: apiResult[imageIndex].video != null &&
                                           apiResult[imageIndex].video != false
                                       ? GestureDetector(
                                       onTap: () {
@@ -391,6 +389,13 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
+
+                      context.read<MovieDataBloc>().add(ClickToSeeMovieDetails());
+
+                      // Await
+                      print('hello this is where the action will be performed');
+
+
                       _showImageDetails(context, index, movieList);
                     },
                     child: ClipRRect(
