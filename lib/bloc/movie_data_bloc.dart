@@ -185,6 +185,9 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
       }
     });
 
+    on<TimeToChangePosterEvent>((event, emit) async {
+
+    });
 
     on<TapOnTopRatedSectionEvent>((event, emit) async {
       if (state is MovieDataLoadedState) {

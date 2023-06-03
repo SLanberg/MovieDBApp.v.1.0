@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   late ScrollController _scrollControllerUpcoming;
 
   Timer? movieTimer;
+  Timer? posterTimer;
 
   bool latestMoviesExpanded = true;
 
@@ -47,6 +48,12 @@ class _HomePageState extends State<HomePage> {
 
     _scrollControllerUpcoming = ScrollController();
     _scrollControllerUpcoming.addListener(_onScroll);
+  }
+
+  _setUpTimedPosterChange() {
+    posterTimer = Timer.periodic(const Duration(seconds: 90), (timer) {
+      context.read<MovieDataBloc>().add(PullLatestMoviesEvent());
+    });
   }
 
   _setUpTimedMoviePull() {
