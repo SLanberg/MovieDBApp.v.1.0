@@ -248,11 +248,13 @@ class _HomePageState extends State<HomePage> {
   void _showImageDetails(
       BuildContext context, int imageIndex, List<MovieModel> apiResult) {
     showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-      ),
         context: context,
         isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(10.0),
+          ),
+        ),
         builder: (context) => DraggableScrollableSheet(
               expand: false,
               initialChildSize: 0.75,
@@ -320,13 +322,8 @@ class _HomePageState extends State<HomePage> {
                                     context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(apiResult[imageIndex].id!));
                                     return const CircularProgressIndicator();
                                   } else if (state is MovieDetailsState) {
-                                    return ListTile(
-                                        leading: const Icon(Icons.timelapse),
-                                        title: state.movieDetailsApiResult.runtime !=
-                                            null
-                                            ? Text(
-                                            '${state.movieDetailsApiResult.runtime} minutes')
-                                            : null);
+                                    return Text(
+                                        '${state.movieDetailsApiResult.status}');
                                   } else {
                                     return const CircularProgressIndicator();
                                   }
@@ -336,23 +333,37 @@ class _HomePageState extends State<HomePage> {
                               BlocBuilder<MovieDataBloc, MovieDataState>(
                                 builder: (context, state) {
                                   if (state is MovieDataInitialState) {
-                                    context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(apiResult[imageIndex].id!));
+                                    context.read<MovieDataBloc>().add(
+                                        ClickToSeeMovieDetails(
+                                            apiResult[imageIndex].id!));
                                     return const CircularProgressIndicator();
                                   } else if (state is MovieDetailsState) {
-                                    return ListTile(
-                                        leading: const Icon(Icons.remove_red_eye),
-                                        title: state.movieDetailsApiResult.status !=
-                                            null
-                                            ? Text(
-                                            '${state.movieDetailsApiResult.status}')
-                                            : null);
+                                    return Text(
+                                        '${state.movieDetailsApiResult.runtime}');
                                   } else {
                                     return const CircularProgressIndicator();
                                   }
                                 },
                               ),
 
+                              BlocBuilder<MovieDataBloc, MovieDataState>(
+                                builder: (context, state) {
 
+                                  context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(apiResult[imageIndex].id!));
+                                  if (state is MovieDataInitialState) {
+
+                                    print('this is me initial state');
+                                    return const CircularProgressIndicator();
+                                  } else if (state is MovieDataLoadingState) {
+                                    return const CircularProgressIndicator();
+                                  } else if (state is MovieDetailsState) {
+                                    return Text(
+                                        '${state.movieDetailsApiResult.revenue}');
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
+                                },
+                              ),
 
                               ListTile(
                                   leading:

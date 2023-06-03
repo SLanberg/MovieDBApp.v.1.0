@@ -187,6 +187,22 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
 
     on<TimeToChangePosterEvent>((event, emit) async {});
 
+    // on<ClickOnButtonWithEvent>((event, emit) async {
+    //   if (state is MovieDataInitialState) {
+    //     emit(MovieDataLoadingState());
+    //     try {
+    //       MovieDetailModel? movieDetailsApiResult =
+    //           await movieDetailRepository.getMovieDetail(
+    //               "https://api.themoviedb.org/3/movie/3?language=en-US&api_key=${dotenv.env['API_KEY']}");
+    //       if (movieDetailsApiResult != null) {
+    //         emit(MovieDetailsState(
+    //             movieDetailsApiResult: movieDetailsApiResult));
+    //         print('movieDetailsApiResult in the state');
+    //       }
+    //     } catch (e) {}
+    //   }
+    // });
+
     on<TapOnTopRatedSectionEvent>((event, emit) async {
       if (state is MovieDataLoadedState) {
         MovieDataLoadedState currentState = state as MovieDataLoadedState;
@@ -221,11 +237,10 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
       if (state is MovieDataInitialState) {
         try {
           MovieDetailModel? movieDetailsApiResult =
-              await movieDetailRepository.getMovieDetail(
-                  "https://api.themoviedb.org/3/movie/${event.movie_id}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+          await movieDetailRepository.getMovieDetail(
+              "https://api.themoviedb.org/3/movie/${event.movie_id}?language=en-US&api_key=${dotenv.env['API_KEY']}");
           if (movieDetailsApiResult != null) {
-            emit(MovieDetailsState(
-                movieDetailsApiResult: movieDetailsApiResult));
+            emit(MovieDetailsState(movieDetailsApiResult: movieDetailsApiResult));
           }
         } catch (e) {
           // Handle any errors that occurred during API request
@@ -233,16 +248,16 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
       } else if (state is MovieDetailsState) {
         try {
           MovieDetailModel? refreshedMovieDetailsApiResult =
-              await movieDetailRepository.getMovieDetail(
-                  "https://api.themoviedb.org/3/movie/${event.movie_id}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+          await movieDetailRepository.getMovieDetail(
+              "https://api.themoviedb.org/3/movie/${event.movie_id}?language=en-US&api_key=${dotenv.env['API_KEY']}");
           if (refreshedMovieDetailsApiResult != null) {
-            emit(MovieDetailsState(
-                movieDetailsApiResult: refreshedMovieDetailsApiResult));
+            emit(MovieDetailsState(movieDetailsApiResult: refreshedMovieDetailsApiResult));
           }
         } catch (e) {
           // Handle any errors that occurred during API request
         }
       }
     });
+
   }
 }

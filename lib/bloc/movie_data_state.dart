@@ -74,6 +74,8 @@ class MovieDataLoadedState extends MovieDataState {
 
 class MovieDataErrorState extends MovieDataState {}
 
+class CollapsedMovieDataLoadingState extends MovieDataState {}
+
 class MovieDetailsState extends MovieDataState {
   final MovieDetailModel movieDetailsApiResult;
 
