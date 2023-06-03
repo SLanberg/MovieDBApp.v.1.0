@@ -12,11 +12,6 @@ class LoadMovieDataEvent extends MovieDataEvent {
   List<Object> get props => [];
 }
 
-class LoadMovieDataOnExpandEvent extends MovieDataEvent {
-  @override
-  List<Object> get props => [];
-}
-
 class ScrollReachedEndLatestMovies extends MovieDataEvent {
   @override
   List<Object> get props => [];
@@ -63,11 +58,21 @@ class OnErrorEvent extends MovieDataEvent {
 }
 
 class ClickToSeeMovieDetails extends MovieDataEvent {
+  const ClickToSeeMovieDetails(this.movie_id);
+
+  final int movie_id;
+
+  @override
+  List<Object> get props => [movie_id];
+}
+
+class TimeToChangePosterEvent extends MovieDataEvent {
   @override
   List<Object> get props => [];
 }
 
-class TimeToChangePosterEvent extends MovieDataEvent {
+
+class ClickOnButtonWithEvent extends MovieDataEvent {
   @override
   List<Object> get props => [];
 }

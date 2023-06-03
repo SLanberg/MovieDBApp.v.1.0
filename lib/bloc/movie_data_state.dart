@@ -73,3 +73,15 @@ class MovieDataLoadedState extends MovieDataState {
 
 
 class MovieDataErrorState extends MovieDataState {}
+
+class MovieDetailsState extends MovieDataState {
+  final MovieDetailModel movieDetailsApiResult;
+
+  const MovieDetailsState({required this.movieDetailsApiResult});
+
+  @override
+  List<Object> get props => [
+    movieDetailsApiResult,
+  ];
+}
+

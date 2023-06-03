@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sportsbet_task/repository/movie_detail_repository.dart';
 
 // Package imports:
 import 'package:sportsbet_task/repository/movie_repository.dart';
@@ -14,7 +15,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
   runApp(
     BlocProvider<MovieDataBloc>(
-      create: (context) => MovieDataBloc(MovieRepository()),
+      create: (context) => MovieDataBloc(MovieRepository(), MovieDetailRepository()),
       child: MyApp(),
     ),
   );
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider<MovieDataBloc>(
-            create: (context) => MovieDataBloc(MovieRepository()),
+            create: (context) => MovieDataBloc(MovieRepository(), MovieDetailRepository()),
           ),
         ],
         child: HomePage(),

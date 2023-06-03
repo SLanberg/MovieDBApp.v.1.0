@@ -4,15 +4,18 @@ import 'package:sportsbet_task/models/movie_model.dart';
 import 'package:sportsbet_task/repository/movie_repository.dart';
 import 'package:equatable/equatable.dart';
 
+import '../models/movie_detail_model.dart';
+import '../repository/movie_detail_repository.dart';
+
 part 'movie_data_event.dart';
 part 'movie_data_state.dart';
 
 class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
   final MovieRepository movieRepository;
+  final MovieDetailRepository movieDetailRepository;
 
-  MovieDataBloc(
-    this.movieRepository,
-  ) : super(MovieDataInitialState()) {
+  MovieDataBloc(this.movieRepository, this.movieDetailRepository)
+      : super(MovieDataInitialState()) {
     on<MovieDataEvent>(
       (event, emit) async {
         if (event is LoadMovieDataEvent) {
@@ -22,8 +25,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
           List<MovieModel>? popularResult = await movieRepository.getMovieData(
               "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=${dotenv.env['API_KEY']}");
 
-          if (apiResult == null ||
-              popularResult == null) {
+          if (apiResult == null || popularResult == null) {
             emit(MovieDataErrorState());
           } else {
             emit(MovieDataLoadedState(
@@ -39,7 +41,6 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
             ));
           }
         }
-
       },
     );
 
@@ -48,7 +49,6 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         MovieDataLoadedState currentState = state as MovieDataLoadedState;
 
         try {
-
           int nextPageLatest = currentState.latestMoviesCurrentPage + 1;
 
           List<MovieModel>? apiResult = await movieRepository.getMovieData(
@@ -158,7 +158,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
 
         try {
           List<MovieModel>? apiResultLatest =
-          await movieRepository.getMovieData(
+              await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${currentState.latestMoviesCurrentPage}&api_key=${dotenv.env['API_KEY']}",
           );
           if (apiResultLatest != null) {
@@ -185,48 +185,64 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
       }
     });
 
-    on<TimeToChangePosterEvent>((event, emit) async {
-
-    });
+    on<TimeToChangePosterEvent>((event, emit) async {});
 
     on<TapOnTopRatedSectionEvent>((event, emit) async {
       if (state is MovieDataLoadedState) {
         MovieDataLoadedState currentState = state as MovieDataLoadedState;
 
-        List<MovieModel>? topRatedApiResult =
-            await movieRepository.getMovieData(
-            "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=${dotenv.env['API_KEY']}");
+        try {
+          List<MovieModel>? topRatedApiResult = await movieRepository.getMovieData(
+              "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=${dotenv.env['API_KEY']}");
 
-        if (topRatedApiResult != null) {
-          emit(currentState.copyWith(
-              topRatedApiResult: topRatedApiResult
-
-          )
-          );
+          if (topRatedApiResult != null) {
+            emit(currentState.copyWith(topRatedApiResult: topRatedApiResult));
+          }
+        } catch (e) {
+          emit(MovieDataErrorState());
         }
       }
     });
-
 
     on<TapOnUpcomingSectionEvent>((event, emit) async {
       if (state is MovieDataLoadedState) {
         MovieDataLoadedState currentState = state as MovieDataLoadedState;
 
-        List<MovieModel>? upcomingApiResult =
-            await movieRepository.getMovieData(
+        List<MovieModel>? upcomingApiResult = await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&api_key=${dotenv.env['API_KEY']}");
 
         if (upcomingApiResult != null) {
-          emit(currentState.copyWith(
-              upcomingApiResult: upcomingApiResult
-          )
-          );
+          emit(currentState.copyWith(upcomingApiResult: upcomingApiResult));
         }
       }
-    }) ;
+    });
 
-    on<ClickToSeeMovieDetails>((event, emit) {
-      print('this is Movie Details event');
+    on<ClickToSeeMovieDetails>((event, emit) async {
+      if (state is MovieDataInitialState) {
+        try {
+          MovieDetailModel? movieDetailsApiResult =
+              await movieDetailRepository.getMovieDetail(
+                  "https://api.themoviedb.org/3/movie/${event.movie_id}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+          if (movieDetailsApiResult != null) {
+            emit(MovieDetailsState(
+                movieDetailsApiResult: movieDetailsApiResult));
+          }
+        } catch (e) {
+          // Handle any errors that occurred during API request
+        }
+      } else if (state is MovieDetailsState) {
+        try {
+          MovieDetailModel? refreshedMovieDetailsApiResult =
+              await movieDetailRepository.getMovieDetail(
+                  "https://api.themoviedb.org/3/movie/${event.movie_id}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+          if (refreshedMovieDetailsApiResult != null) {
+            emit(MovieDetailsState(
+                movieDetailsApiResult: refreshedMovieDetailsApiResult));
+          }
+        } catch (e) {
+          // Handle any errors that occurred during API request
+        }
+      }
     });
   }
 }

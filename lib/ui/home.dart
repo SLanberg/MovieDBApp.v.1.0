@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _setUpTimedMoviePull();
+    _setUpTimedPosterChange();
 
     _scrollControllerLatest = ScrollController();
     _scrollControllerLatest.addListener(_onScroll);
@@ -52,7 +53,8 @@ class _HomePageState extends State<HomePage> {
 
   _setUpTimedPosterChange() {
     posterTimer = Timer.periodic(const Duration(seconds: 90), (timer) {
-      context.read<MovieDataBloc>().add(PullLatestMoviesEvent());
+      context.read<MovieDataBloc>().add(TimeToChangePosterEvent());
+      print("Poster changed");
     });
   }
 
@@ -70,28 +72,32 @@ class _HomePageState extends State<HomePage> {
 
   void _onScroll() {
     if (_scrollControllerLatest.hasClients) {
-      if (_scrollControllerLatest.position.atEdge && _scrollControllerLatest.position.pixels > 0) {
+      if (_scrollControllerLatest.position.atEdge &&
+          _scrollControllerLatest.position.pixels > 0) {
         // Load more data when reaching the end of the scroll
         context.read<MovieDataBloc>().add(ScrollReachedEndLatestMovies());
       }
     }
 
     if (_scrollControllerPopular.hasClients) {
-      if (_scrollControllerPopular.position.atEdge && _scrollControllerPopular.position.pixels > 0) {
+      if (_scrollControllerPopular.position.atEdge &&
+          _scrollControllerPopular.position.pixels > 0) {
         // Load more data when reaching the end of the scroll
         context.read<MovieDataBloc>().add(ScrollReachedEndPopularMovies());
       }
     }
 
     if (_scrollControllerTopRated.hasClients) {
-      if (_scrollControllerTopRated.position.atEdge && _scrollControllerTopRated.position.pixels > 0) {
+      if (_scrollControllerTopRated.position.atEdge &&
+          _scrollControllerTopRated.position.pixels > 0) {
         // Load more data when reaching the end of the scroll
         context.read<MovieDataBloc>().add(ScrollReachedEndTopRatedMovies());
       }
     }
 
     if (_scrollControllerUpcoming.hasClients) {
-      if (_scrollControllerUpcoming.position.atEdge && _scrollControllerUpcoming.position.pixels > 0) {
+      if (_scrollControllerUpcoming.position.atEdge &&
+          _scrollControllerUpcoming.position.pixels > 0) {
         // Load more data when reaching the end of the scroll
         context.read<MovieDataBloc>().add(ScrollReachedEndUpcomingMovies());
       }
@@ -106,7 +112,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context, state) {
           if (state is MovieDataInitialState) {
             context.read<MovieDataBloc>().add(LoadMovieDataEvent());
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           } else if (state is MovieDataLoadingState) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is MovieDataLoadedState) {
@@ -127,7 +133,10 @@ class _HomePageState extends State<HomePage> {
             );
 
             return Center(
-              child: Text("😭 ERROR", style: Theme.of(context).textTheme.headlineMedium,),
+              child: Text(
+                "😭 ERROR",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             );
           }
           ScaffoldMessenger.of(context).showSnackBar(
@@ -141,7 +150,8 @@ class _HomePageState extends State<HomePage> {
           );
 
           return Center(
-            child: Text("😭 ERROR", style: Theme.of(context).textTheme.headlineMedium),
+            child: Text("😭 ERROR",
+                style: Theme.of(context).textTheme.headlineMedium),
           );
         },
       ),
@@ -155,7 +165,6 @@ class _HomePageState extends State<HomePage> {
     List<MovieModel> upcomingApiResult,
   ) {
     return CustomScrollView(
-
       slivers: [
         SliverAppBar(
           backgroundColor: Colors.black,
@@ -180,17 +189,18 @@ class _HomePageState extends State<HomePage> {
           delegate: SliverChildListDelegate(
             [
               CustomExpansionContainer(
-                onExpansionChanged: (initiallyExpanded) {
-                  if (!initiallyExpanded) {
-                    stopMovieTimer();
-                  } else {
-                    _setUpTimedMoviePull();
-                  }
-                },
+                  onExpansionChanged: (initiallyExpanded) {
+                    if (!initiallyExpanded) {
+                      stopMovieTimer();
+                    } else {
+                      _setUpTimedMoviePull();
+                    }
+                  },
                   initiallyExpanded: true,
                   title: 'Latest Movies',
                   child: _buildMovieList(
-                      latestApiResult, _scrollControllerLatest,
+                    latestApiResult,
+                    _scrollControllerLatest,
                   )),
               const SizedBox(
                 height: 5.0,
@@ -206,9 +216,9 @@ class _HomePageState extends State<HomePage> {
               CustomExpansionContainer(
                   onExpansionChanged: (initiallyExpanded) {
                     if (initiallyExpanded) {
-                      context.read<MovieDataBloc>().add(
-                          TapOnTopRatedSectionEvent()
-                      );
+                      context
+                          .read<MovieDataBloc>()
+                          .add(TapOnTopRatedSectionEvent());
                     }
                   },
                   initiallyExpanded: false,
@@ -220,10 +230,9 @@ class _HomePageState extends State<HomePage> {
               ),
               CustomExpansionContainer(
                   onExpansionChanged: (initiallyExpanded) {
-                    context.read<MovieDataBloc>().add(
-                        TapOnUpcomingSectionEvent()
-                    );
-
+                    context
+                        .read<MovieDataBloc>()
+                        .add(TapOnUpcomingSectionEvent());
                   },
                   initiallyExpanded: false,
                   title: 'Upcoming Movies',
@@ -239,13 +248,11 @@ class _HomePageState extends State<HomePage> {
   void _showImageDetails(
       BuildContext context, int imageIndex, List<MovieModel> apiResult) {
     showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+      ),
         context: context,
         isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(10.0),
-          ),
-        ),
         builder: (context) => DraggableScrollableSheet(
               expand: false,
               initialChildSize: 0.75,
@@ -266,18 +273,18 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             children: [
                               ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: apiResult[imageIndex].posterPath != null
-                                      ? Image.network(
-                                          "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
-                                          height: 490,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.asset(
-                                          'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
-                                          height: 490,
-                                          fit: BoxFit.cover,
-                                        ),
+                                borderRadius: BorderRadius.circular(10),
+                                child: apiResult[imageIndex].posterPath != null
+                                    ? Image.network(
+                                        "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
+                                        height: 490,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                                        height: 490,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
 
                               ClipRRect(
@@ -292,18 +299,57 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               ListTile(
-                                  leading:
-                                  const Icon(Icons.star_border),
-                                  title: apiResult[imageIndex].voteAverage != null
-                                      ? Text('${apiResult[imageIndex].voteAverage}')
+                                  leading: const Icon(Icons.star_border),
+                                  title: apiResult[imageIndex].voteAverage !=
+                                          null
+                                      ? Text(
+                                          '${apiResult[imageIndex].voteAverage}')
                                       : null),
 
                               ListTile(
                                 leading: const Icon(Icons.calendar_month),
                                 title: apiResult[imageIndex].releaseDate != null
-                                    ? Text(DateFormat('yyyy-MM-dd')
-                                        .format(apiResult[imageIndex].releaseDate!))
+                                    ? Text(DateFormat('yyyy-MM-dd').format(
+                                        apiResult[imageIndex].releaseDate!))
                                     : null,
+                              ),
+
+                              BlocBuilder<MovieDataBloc, MovieDataState>(
+                                builder: (context, state) {
+                                  if (state is MovieDataInitialState) {
+                                    context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(apiResult[imageIndex].id!));
+                                    return const CircularProgressIndicator();
+                                  } else if (state is MovieDetailsState) {
+                                    return ListTile(
+                                        leading: const Icon(Icons.timelapse),
+                                        title: state.movieDetailsApiResult.runtime !=
+                                            null
+                                            ? Text(
+                                            '${state.movieDetailsApiResult.runtime} minutes')
+                                            : null);
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
+                                },
+                              ),
+
+                              BlocBuilder<MovieDataBloc, MovieDataState>(
+                                builder: (context, state) {
+                                  if (state is MovieDataInitialState) {
+                                    context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(apiResult[imageIndex].id!));
+                                    return const CircularProgressIndicator();
+                                  } else if (state is MovieDetailsState) {
+                                    return ListTile(
+                                        leading: const Icon(Icons.remove_red_eye),
+                                        title: state.movieDetailsApiResult.status !=
+                                            null
+                                            ? Text(
+                                            '${state.movieDetailsApiResult.status}')
+                                            : null);
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
+                                },
                               ),
 
 
@@ -312,29 +358,37 @@ class _HomePageState extends State<HomePage> {
                                   leading:
                                       const Icon(Icons.contact_support_rounded),
                                   title: apiResult[imageIndex].overview != null
-                                      ? Text('${apiResult[imageIndex].overview}')
+                                      ? Text(
+                                          '${apiResult[imageIndex].overview}')
                                       : null),
 
                               // In the response, if video is available show a play icon
                               // (use any free resource available).
                               // Clicking on this icon snackbar should appear with movie name.
                               ListTile(
-                                  leading: apiResult[imageIndex].video != null &&
+                                  leading: apiResult[imageIndex].video !=
+                                              null &&
                                           apiResult[imageIndex].video != false
                                       ? GestureDetector(
-                                      onTap: () {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              "${apiResult[imageIndex].title}",
-                                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
-                                            ),
-                                            backgroundColor: Colors.green,
-                                            duration: const Duration(seconds: 1),
-                                          ),
-                                        );
-                                      },
-                                      child: const Icon(Icons.play_arrow))
+                                          onTap: () {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  "${apiResult[imageIndex].title}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge
+                                                      ?.copyWith(
+                                                          color: Colors.white),
+                                                ),
+                                                backgroundColor: Colors.green,
+                                                duration:
+                                                    const Duration(seconds: 1),
+                                              ),
+                                            );
+                                          },
+                                          child: const Icon(Icons.play_arrow))
                                       : null),
                             ],
                           ),
@@ -396,26 +450,26 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-
-                      context.read<MovieDataBloc>().add(ClickToSeeMovieDetails());
+                      context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(movieList[index].id!));
 
                       // Await
                       print('hello this is where the action will be performed');
-
 
                       _showImageDetails(context, index, movieList);
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      child: movieList[index].posterPath != null ? Image.network(
-                        "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
-                        width: 180,
-                        fit: BoxFit.cover,
-                      ) : Image.asset(
-                        'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
-                        width: 180,
-                        fit: BoxFit.cover,
-                      ),
+                      child: movieList[index].posterPath != null
+                          ? Image.network(
+                              "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
+                              width: 180,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                              width: 180,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                 ),
