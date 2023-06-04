@@ -12,8 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:sportsbet_task/main.dart';
-import 'package:sportsbet_task/ui/home.dart';
+import 'package:sportsbet_task/ui/home_page.dart';
 import 'package:sportsbet_task/widgets/custom_expansion_container.dart';
 
 void main() {

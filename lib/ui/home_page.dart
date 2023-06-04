@@ -1,6 +1,5 @@
 // Dart imports:
 import 'dart:async';
-import 'dart:math';
 
 // Flutter imports:
 import 'package:cached_network_image/cached_network_image.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
@@ -47,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   void didUpdateWidget(covariant HomePage oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (this.widget != oldWidget) {
+    if (widget != oldWidget) {
       print('Not equal');
     }
   }
@@ -293,9 +291,6 @@ class _HomePageState extends State<HomePage> {
   // You can write more logic when user press on detail
   void _handleViewDetails(int imageIndex, List<MovieModel> apiResult) {
     // Replace with your logic to handle "View Details" action
-    if (kDebugMode) {
-      print('Make a copy for ${imageIndex + 1} post release feature');
-    }
   }
 
   Widget _buildMovieList(
