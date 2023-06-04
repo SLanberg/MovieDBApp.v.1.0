@@ -122,37 +122,19 @@ class _HomePageState extends State<HomePage> {
                 state.topRatedApiResult,
                 state.upcomingApiResult);
           } else if (state is MovieDataErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  "Something went wrong! Try to refresh the app",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                backgroundColor: Colors.red,
-              ),
-            );
-
             return Center(
               child: Text(
-                "😭 ERROR",
-                style: Theme.of(context).textTheme.headlineMedium,
+                "😭 Something from API doesn't load up \\"
+                    "If you see this message it means you received error from API \\",
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
               ),
             );
           }
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                "Something went wrong! Try to refresh the app",
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              backgroundColor: Colors.red,
-            ),
-          );
 
           return Center(
-            child: Text("😭 ERROR",
-                style: Theme.of(context).textTheme.headlineMedium),
-          );
+            child: Text("We've got into undefined state. Chek the state parameter",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
+          ));
         },
       ),
     );
@@ -306,19 +288,22 @@ class _HomePageState extends State<HomePage> {
                                   if (state is MovieDataInitialState) {
                                     return const CircularProgressIndicator();
                                   } else if (state is MovieDetailsState) {
-                                    if (state.movieDetailsApiResult.genres != null) {
-                                      final genres = state.movieDetailsApiResult.genres;
-                                      final genresString = genres != null ? genres.map((genre) => genre.name).join(', ') : '';
+                                    if (state.movieDetailsApiResult.genres !=
+                                        null) {
+                                      final genres =
+                                          state.movieDetailsApiResult.genres;
+                                      final genresString = genres != null
+                                          ? genres
+                                              .map((genre) => genre.name)
+                                              .join(', ')
+                                          : '';
                                       return ListTile(
                                           leading: const Icon(Icons.add_box),
-                                          title: Text(genresString)
-                                      );
+                                          title: Text(genresString));
                                     }
                                     return const ListTile(
                                         leading: Icon(Icons.remove_red_eye),
-                                        title: Text('Unknown')
-                                    );
-
+                                        title: Text('Unknown'));
                                   } else {
                                     return const CircularProgressIndicator();
                                   }
@@ -334,17 +319,21 @@ class _HomePageState extends State<HomePage> {
                                       : null),
                               BlocBuilder<MovieDataBloc, MovieDataState>(
                                 builder: (context, state) {
-                                  context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(apiResult[imageIndex].id!));
+                                  context.read<MovieDataBloc>().add(
+                                      ClickToSeeMovieDetails(
+                                          apiResult[imageIndex].id!));
 
                                   if (state is MovieDataInitialState) {
                                     return const CircularProgressIndicator();
                                   } else if (state is MovieDetailsState) {
                                     return ListTile(
-                                        leading: const Icon(Icons.remove_red_eye),
-                                        title: state.movieDetailsApiResult.status !=
-                                            null
+                                        leading:
+                                            const Icon(Icons.remove_red_eye),
+                                        title: state.movieDetailsApiResult
+                                                    .status !=
+                                                null
                                             ? Text(
-                                            '${state.movieDetailsApiResult.status}')
+                                                '${state.movieDetailsApiResult.status}')
                                             : null);
                                   } else {
                                     return const CircularProgressIndicator();
