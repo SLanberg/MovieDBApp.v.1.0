@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
@@ -212,7 +211,7 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           );
         } else {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
       },
     );

@@ -8,8 +8,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 // Project imports:
 import 'package:sportsbet_task/repository/movie_detail_repository.dart';
 import 'package:sportsbet_task/repository/movie_repository.dart';
+import 'package:sportsbet_task/ui/home_page.dart';
 import 'bloc/movie_data_bloc.dart';
-import 'ui/home.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
