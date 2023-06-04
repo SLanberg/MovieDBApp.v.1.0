@@ -16,6 +16,7 @@ class MovieDataLoadedState extends MovieDataState {
   final List<MovieModel> popularMoviesApiResult;
   final List<MovieModel> topRatedApiResult;
   final List<MovieModel> upcomingApiResult;
+  // final String poste
   final int latestMoviesCurrentPage;
   final int popularMoviesCurrentPage;
   final int topRatedMoviesCurrentPage;
