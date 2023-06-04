@@ -163,7 +163,8 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                      'http://image.tmdb.org/t/p/w500/${latestApiResult[Random().nextInt(latestApiResult.length)].posterPath}'),
+                      'http://image.tmdb.org/t/p/w500/${latestApiResult[Random().nextInt(latestApiResult.length)].posterPath}',
+                  ),
                   // Replace with your image path
                   fit: BoxFit.fill,
                 ),
@@ -458,6 +459,9 @@ class _HomePageState extends State<HomePage> {
                               "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
                               width: 180,
                               fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                return Image.asset('images/No-Image-Placeholder.png');
+                              },
                             )
                           : Image.asset(
                               'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
