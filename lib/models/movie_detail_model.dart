@@ -2,6 +2,7 @@
 //
 //     final movieDetailsModel = movieDetailsModelFromJson(jsonString);
 
+// Dart imports:
 import 'dart:convert';
 
 MovieDetailModel movieDetailsModelFromJson(String str) => MovieDetailModel.fromJson(json.decode(str));

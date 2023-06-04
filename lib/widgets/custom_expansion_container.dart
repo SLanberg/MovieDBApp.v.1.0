@@ -1,7 +1,5 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../bloc/movie_data_bloc.dart';
 
 class CustomExpansionContainer extends StatelessWidget {
   final String title;

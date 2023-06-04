@@ -1,15 +1,19 @@
+// Dart imports:
 import 'dart:async';
+import 'dart:math';
 
+// Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
-import 'package:sportsbet_task/models/movie_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../widgets/custom_expansion_container.dart';
+// Package imports:
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import 'dart:math';
+// Project imports:
+import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
+import 'package:sportsbet_task/models/movie_model.dart';
+import '../widgets/custom_expansion_container.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -54,7 +58,10 @@ class _HomePageState extends State<HomePage> {
   _setUpTimedPosterChange() {
     posterTimer = Timer.periodic(const Duration(seconds: 90), (timer) {
       context.read<MovieDataBloc>().add(TimeToChangePosterEvent());
-      print("Poster changed");
+      if (kDebugMode) {
+        print("Poster changed");
+        print("Don't forget to make moving poster");
+      }
     });
   }
 
@@ -132,13 +139,15 @@ class _HomePageState extends State<HomePage> {
 
             context.read<MovieDataBloc>().add(LoadMovieDataEvent());
             return const CircularProgressIndicator();
-
-
           }
 
           return Center(
-            child: Text("We've got into undefined state. Chek the state parameter",
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
+              child: Text(
+            "We've got into undefined state. Chek the state parameter",
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium
+                ?.copyWith(color: Colors.white),
           ));
         },
       ),
@@ -163,14 +172,13 @@ class _HomePageState extends State<HomePage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                      'http://image.tmdb.org/t/p/w500/${latestApiResult[Random().nextInt(latestApiResult.length)].posterPath}',
+                    'http://image.tmdb.org/t/p/w500/${latestApiResult[Random().nextInt(latestApiResult.length)].posterPath}',
                   ),
                   // Replace with your image path
                   fit: BoxFit.fill,
                 ),
               ),
             ),
-            // title: Text('Available seats'),
           ),
         ),
         SliverList(
@@ -304,12 +312,24 @@ class _HomePageState extends State<HomePage> {
                                               .join(', ')
                                           : '';
                                       return ListTile(
-                                          leading: const Icon(Icons.add_box),
-                                          title: Text(genresString));
+                                        leading: const Icon(Icons.add_box),
+                                        title: Text(
+                                          genresString,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                        ),
+                                      );
                                     }
-                                    return const ListTile(
-                                        leading: Icon(Icons.remove_red_eye),
-                                        title: Text('Unknown'));
+                                    return ListTile(
+                                        leading:
+                                            const Icon(Icons.remove_red_eye),
+                                        title: Text(
+                                          'Unknown',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                        ));
                                   } else {
                                     return const CircularProgressIndicator();
                                   }
@@ -323,6 +343,7 @@ class _HomePageState extends State<HomePage> {
                                       ? Text(
                                           '${apiResult[imageIndex].voteAverage}')
                                       : null),
+
                               BlocBuilder<MovieDataBloc, MovieDataState>(
                                 builder: (context, state) {
                                   context.read<MovieDataBloc>().add(
@@ -346,6 +367,7 @@ class _HomePageState extends State<HomePage> {
                                   }
                                 },
                               ),
+
                               ListTile(
                                 leading: const Icon(Icons.calendar_month),
                                 title: apiResult[imageIndex].releaseDate != null
@@ -378,7 +400,7 @@ class _HomePageState extends State<HomePage> {
                                                   "${apiResult[imageIndex].title}",
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodyLarge
+                                                      .bodyMedium
                                                       ?.copyWith(
                                                           color: Colors.white),
                                                 ),
@@ -459,8 +481,10 @@ class _HomePageState extends State<HomePage> {
                               "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
                               width: 180,
                               fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                return Image.asset('images/No-Image-Placeholder.png');
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return Image.asset(
+                                    'images/No-Image-Placeholder.png');
                               },
                             )
                           : Image.asset(
@@ -478,7 +502,7 @@ class _HomePageState extends State<HomePage> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     '${movieList[index].title}',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.bodyMedium,
                     textAlign: TextAlign.start,
                   ),
                 ),

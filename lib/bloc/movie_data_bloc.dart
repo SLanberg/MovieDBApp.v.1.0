@@ -1,9 +1,11 @@
-import 'package:bloc/bloc.dart';
+// Package imports:
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+// Project imports:
 import 'package:sportsbet_task/models/movie_model.dart';
 import 'package:sportsbet_task/repository/movie_repository.dart';
-import 'package:equatable/equatable.dart';
-
 import '../models/movie_detail_model.dart';
 import '../repository/movie_detail_repository.dart';
 
@@ -31,8 +33,8 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
             emit(MovieDataLoadedState(
               latestMoviesApiResult: apiResult,
               popularMoviesApiResult: popularResult,
-              topRatedApiResult: [],
-              upcomingApiResult: [],
+              topRatedApiResult: const [],
+              upcomingApiResult: const [],
               isLatestMovieSectionExpanded: true,
               latestMoviesCurrentPage: 1,
               popularMoviesCurrentPage: 1,
@@ -238,7 +240,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         try {
           MovieDetailModel? movieDetailsApiResult =
           await movieDetailRepository.getMovieDetail(
-              "https://api.themoviedb.org/3/movie/${event.movie_id}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+              "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
           if (movieDetailsApiResult != null) {
             emit(MovieDetailsState(movieDetailsApiResult: movieDetailsApiResult));
           }
@@ -249,7 +251,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         try {
           MovieDetailModel? refreshedMovieDetailsApiResult =
           await movieDetailRepository.getMovieDetail(
-              "https://api.themoviedb.org/3/movie/${event.movie_id}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+              "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
           if (refreshedMovieDetailsApiResult != null) {
             emit(MovieDetailsState(movieDetailsApiResult: refreshedMovieDetailsApiResult));
           }

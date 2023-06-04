@@ -1,7 +1,11 @@
+// Dart imports:
 import 'dart:convert';
 
-import 'package:sportsbet_task/models/movie_detail_model.dart';
+// Package imports:
 import 'package:http/http.dart' as http;
+
+// Project imports:
+import 'package:sportsbet_task/models/movie_detail_model.dart';
 
 class MovieDetailRepository {
   Future<MovieDetailModel?> getMovieDetail(String url) async {

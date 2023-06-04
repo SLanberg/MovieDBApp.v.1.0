@@ -3,6 +3,8 @@
 //     final movie = movieFromJson(jsonString);
 
 // For generation used https://app.quicktype.io/
+
+// Dart imports:
 import 'dart:convert';
 
 MovieModel movieFromJson(String str) => MovieModel.fromJson(json.decode(str));

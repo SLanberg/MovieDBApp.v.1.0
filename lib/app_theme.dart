@@ -5,61 +5,14 @@ import 'package:flutter/material.dart';
 // and store users choice with shared preferences
 class AppTheme {
   static TextTheme originalTextTheme = const TextTheme(
-      headlineLarge: TextStyle(
-        fontFamily: "Roboto",
-        fontSize: 41,
-        height: 1,
-        letterSpacing: 0,
-        fontWeight: FontWeight.w500,
-        color: Colors.white,
-      ),
-      headlineMedium: TextStyle(
-        fontFamily: "Roboto",
-        fontSize: 30,
-        height: 1,
-        letterSpacing: 0,
-        fontWeight: FontWeight.w500,
-        color: Colors.white,
-      ),
-      headlineSmall: TextStyle(
-        fontFamily: "Roboto",
-        fontSize: 24,
-        height: 1,
-        letterSpacing: 0,
-        fontWeight: FontWeight.w500,
-        color: Colors.white,
-      ),
-      // headlineSmall: ,
-      titleMedium: TextStyle(
-        fontFamily: "Roboto",
-        fontSize: 20,
-        height: 1,
-        letterSpacing: 0,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
-      bodyMedium: TextStyle(
-        fontFamily: "Roboto",
-        fontSize: 14,
-        letterSpacing: 0,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
-      bodySmall: TextStyle(
-        fontFamily: "Roboto",
-        fontSize: 12,
-        letterSpacing: 0,
-        fontWeight: FontWeight.w400,
-        color: Colors.white,
-      ),
-      labelSmall: TextStyle(
-        fontFamily: "Roboto",
-        fontStyle: FontStyle.italic,
-        fontSize: 12,
-        letterSpacing: 0,
-        fontWeight: FontWeight.w400,
-        color: Colors.white,
-      ));
+    bodyMedium: TextStyle(
+      fontFamily: "Roboto",
+      fontSize: 14,
+      letterSpacing: 0,
+      fontWeight: FontWeight.w600,
+      color: Colors.black,
+    ),
+  );
 
   static ThemeData original() {
     return ThemeData(

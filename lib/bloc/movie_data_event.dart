@@ -58,12 +58,12 @@ class OnErrorEvent extends MovieDataEvent {
 }
 
 class ClickToSeeMovieDetails extends MovieDataEvent {
-  const ClickToSeeMovieDetails(this.movie_id);
+  const ClickToSeeMovieDetails(this.movieId);
 
-  final int movie_id;
+  final int movieId;
 
   @override
-  List<Object> get props => [movie_id];
+  List<Object> get props => [movieId];
 }
 
 class TimeToChangePosterEvent extends MovieDataEvent {
