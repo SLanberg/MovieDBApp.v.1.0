@@ -170,15 +170,14 @@ class _HomePageState extends State<HomePage> {
           // pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    'http://image.tmdb.org/t/p/w500/${latestApiResult[Random().nextInt(latestApiResult.length)].posterPath}',
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      'http://image.tmdb.org/t/p/w500/${latestApiResult[Random().nextInt(latestApiResult.length)].posterPath}',
+                    ),
+                    fit: BoxFit.fill,
                   ),
-                  // Replace with your image path
-                  fit: BoxFit.fill,
                 ),
-              ),
             ),
           ),
         ),
