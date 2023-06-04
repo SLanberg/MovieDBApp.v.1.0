@@ -300,6 +300,31 @@ class _HomePageState extends State<HomePage> {
                                   },
                                 ),
                               ),
+
+                              BlocBuilder<MovieDataBloc, MovieDataState>(
+                                builder: (context, state) {
+                                  if (state is MovieDataInitialState) {
+                                    return const CircularProgressIndicator();
+                                  } else if (state is MovieDetailsState) {
+                                    if (state.movieDetailsApiResult.genres != null) {
+                                      final genres = state.movieDetailsApiResult.genres;
+                                      final genresString = genres != null ? genres.map((genre) => genre.name).join(', ') : '';
+                                      return ListTile(
+                                          leading: const Icon(Icons.add_box),
+                                          title: Text(genresString)
+                                      );
+                                    }
+                                    return const ListTile(
+                                        leading: Icon(Icons.remove_red_eye),
+                                        title: Text('Unknown')
+                                    );
+
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
+                                },
+                              ),
+
                               ListTile(
                                   leading: const Icon(Icons.star_border),
                                   title: apiResult[imageIndex].voteAverage !=
@@ -307,62 +332,31 @@ class _HomePageState extends State<HomePage> {
                                       ? Text(
                                           '${apiResult[imageIndex].voteAverage}')
                                       : null),
+                              BlocBuilder<MovieDataBloc, MovieDataState>(
+                                builder: (context, state) {
+                                  context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(apiResult[imageIndex].id!));
 
+                                  if (state is MovieDataInitialState) {
+                                    return const CircularProgressIndicator();
+                                  } else if (state is MovieDetailsState) {
+                                    return ListTile(
+                                        leading: const Icon(Icons.remove_red_eye),
+                                        title: state.movieDetailsApiResult.status !=
+                                            null
+                                            ? Text(
+                                            '${state.movieDetailsApiResult.status}')
+                                            : null);
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
+                                },
+                              ),
                               ListTile(
                                 leading: const Icon(Icons.calendar_month),
                                 title: apiResult[imageIndex].releaseDate != null
                                     ? Text(DateFormat('yyyy-MM-dd').format(
                                         apiResult[imageIndex].releaseDate!))
                                     : null,
-                              ),
-
-                              BlocBuilder<MovieDataBloc, MovieDataState>(
-                                builder: (context, state) {
-                                  if (state is MovieDataInitialState) {
-                                    context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(apiResult[imageIndex].id!));
-                                    return const CircularProgressIndicator();
-                                  } else if (state is MovieDetailsState) {
-                                    return Text(
-                                        '${state.movieDetailsApiResult.status}');
-                                  } else {
-                                    return const CircularProgressIndicator();
-                                  }
-                                },
-                              ),
-
-                              BlocBuilder<MovieDataBloc, MovieDataState>(
-                                builder: (context, state) {
-                                  if (state is MovieDataInitialState) {
-                                    context.read<MovieDataBloc>().add(
-                                        ClickToSeeMovieDetails(
-                                            apiResult[imageIndex].id!));
-                                    return const CircularProgressIndicator();
-                                  } else if (state is MovieDetailsState) {
-                                    return Text(
-                                        '${state.movieDetailsApiResult.runtime}');
-                                  } else {
-                                    return const CircularProgressIndicator();
-                                  }
-                                },
-                              ),
-
-                              BlocBuilder<MovieDataBloc, MovieDataState>(
-                                builder: (context, state) {
-
-                                  context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(apiResult[imageIndex].id!));
-                                  if (state is MovieDataInitialState) {
-
-                                    print('this is me initial state');
-                                    return const CircularProgressIndicator();
-                                  } else if (state is MovieDataLoadingState) {
-                                    return const CircularProgressIndicator();
-                                  } else if (state is MovieDetailsState) {
-                                    return Text(
-                                        '${state.movieDetailsApiResult.revenue}');
-                                  } else {
-                                    return const CircularProgressIndicator();
-                                  }
-                                },
                               ),
 
                               ListTile(
@@ -461,11 +455,6 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(movieList[index].id!));
-
-                      // Await
-                      print('hello this is where the action will be performed');
-
                       _showImageDetails(context, index, movieList);
                     },
                     child: ClipRRect(
