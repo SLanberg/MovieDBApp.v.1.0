@@ -21,7 +21,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
   MovieDataBloc(this.movieRepository, this.movieDetailRepository)
       : super(MovieDataInitialState()) {
     on<MovieDataEvent>(
-      (event, emit) async {
+          (event, emit) async {
         if (event is LoadMovieDataEvent) {
           emit(MovieDataLoadingState());
           List<MovieModel>? apiResult = await movieRepository.getMovieData(
@@ -29,9 +29,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
           List<MovieModel>? popularResult = await movieRepository.getMovieData(
               "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=${dotenv.env['API_KEY']}");
 
-
-
-        if (apiResult == null || popularResult == null) {
+          if (apiResult == null || popularResult == null) {
             emit(MovieDataErrorState());
           } else {
             emit(MovieDataLoadedState(
@@ -44,7 +42,9 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
               popularMoviesCurrentPage: 1,
               topRatedMoviesCurrentPage: 1,
               upcomingCurrentPage: 1,
-              homePageHeroPoster: apiResult[Random().nextInt(apiResult.length)].posterPath ?? "",
+              homePageHeroPoster:
+              apiResult[Random().nextInt(apiResult.length)].posterPath ??
+                  "",
             ));
           }
         }
@@ -85,7 +85,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         try {
           int nextPagePopular = currentState.popularMoviesCurrentPage + 1;
           List<MovieModel>? apiResultPopular =
-              await movieRepository.getMovieData(
+          await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/popular?language=en-US&page=$nextPagePopular&api_key=${dotenv.env['API_KEY']}",
           );
 
@@ -112,7 +112,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         try {
           int nextPageTopRated = currentState.topRatedMoviesCurrentPage + 1;
           List<MovieModel>? apiResultTopRated =
-              await movieRepository.getMovieData(
+          await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=$nextPageTopRated&api_key=${dotenv.env['API_KEY']}",
           );
 
@@ -139,7 +139,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         try {
           int nextPageUpcoming = currentState.upcomingCurrentPage + 1;
           List<MovieModel>? apiResultUpcoming =
-              await movieRepository.getMovieData(
+          await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=$nextPageUpcoming&api_key=${dotenv.env['API_KEY']}",
           );
 
@@ -165,7 +165,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
 
         try {
           List<MovieModel>? apiResultLatest =
-              await movieRepository.getMovieData(
+          await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${currentState.latestMoviesCurrentPage}&api_key=${dotenv.env['API_KEY']}",
           );
           if (apiResultLatest != null) {
@@ -241,30 +241,34 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
     });
 
     on<ClickToSeeMovieDetails>((event, emit) async {
-      // if (state is MovieDataInitialState) {
-      //     try {
-      //       MovieDetailModel? movieDetailsApiResult =
-      //       await movieDetailRepository.getMovieDetail(
-      //           "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
-      //       if (movieDetailsApiResult != null) {
-      //         emit(MovieDetailsState(movieDetailsApiResult: movieDetailsApiResult));
-      //       }
-      //     } catch (e) {
-      //       // Handle any errors that occurred during API request
-      //     }
-      //   } else if (state is MovieDetailsState) {
-      //     try {
-      //       MovieDetailModel? refreshedMovieDetailsApiResult =
-      //       await movieDetailRepository.getMovieDetail(
-      //           "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
-      //       if (refreshedMovieDetailsApiResult != null) {
-      //         emit(MovieDetailsState(movieDetailsApiResult: refreshedMovieDetailsApiResult));
-      //       }
-      //     } catch (e) {
-      //       // Handle any errors that occurred during API request
-      //     }
-      //   }
-      // });
+      try {
+        MovieDetailModel? movieDetailsApiResult =
+        await movieDetailRepository.getMovieDetail(
+            "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+
+        print("$movieDetailsApiResult movieDetailsApiResult");
+        if (movieDetailsApiResult != null) {
+          print('Im not null and going through');
+          emit(MovieDetailsState(movieDetailsApiResult: movieDetailsApiResult));
+        }
+      } catch (e) {
+        print('Error happened here ClickToSeeMovieDetails');
+      }
     });
+
+    // on<ResetMovieData>((event, emit) async {
+    //   try {
+    //     MovieDetailModel? movieDetailsApiResult =
+    //     await movieDetailRepository.getMovieDetail(
+    //         "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+    //     if (movieDetailsApiResult != null) {
+    //       print('Im not null and going through');
+    //       emit(MovieDetailsState(movieDetailsApiResult: movieDetailsApiResult));
+    //     }
+    //   } catch (e) {
+    //     // Handle any errors that occurred during API request
+    //   }
+    //
+    // });
   }
 }
