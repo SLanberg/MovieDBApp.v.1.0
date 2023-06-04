@@ -125,12 +125,11 @@ class _HomePageState extends State<HomePage> {
             return const Center(child: CircularProgressIndicator());
           } else if (state is MovieDataLoadedState) {
             return buildHomeSections(
-                state.latestMoviesApiResult,
-                state.popularMoviesApiResult,
-                state.topRatedApiResult,
-                state.upcomingApiResult,
+              state.latestMoviesApiResult,
+              state.popularMoviesApiResult,
+              state.topRatedApiResult,
+              state.upcomingApiResult,
               state.homePageHeroPoster,
-
             );
           } else if (state is MovieDataErrorState) {
             // I need to stop to relay on MovieDB API so much
@@ -163,7 +162,7 @@ class _HomePageState extends State<HomePage> {
     List<MovieModel> popularApiResult,
     List<MovieModel> topRatedApiResult,
     List<MovieModel> upcomingApiResult,
-      String? homePageHeroPoster,
+    String? homePageHeroPoster,
   ) {
     return CustomScrollView(
       slivers: [
@@ -174,14 +173,14 @@ class _HomePageState extends State<HomePage> {
           // pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: CachedNetworkImageProvider(
-                      'http://image.tmdb.org/t/p/w500/$homePageHeroPoster',
-                    ),
-                    fit: BoxFit.fill,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: CachedNetworkImageProvider(
+                    'http://image.tmdb.org/t/p/w500/$homePageHeroPoster',
                   ),
+                  fit: BoxFit.fill,
                 ),
+              ),
             ),
           ),
         ),
