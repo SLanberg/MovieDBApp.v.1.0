@@ -122,13 +122,18 @@ class _HomePageState extends State<HomePage> {
                 state.topRatedApiResult,
                 state.upcomingApiResult);
           } else if (state is MovieDataErrorState) {
-            return Center(
-              child: Text(
-                "😭 Something from API doesn't load up \\"
-                    "If you see this message it means you received error from API \\",
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
-              ),
-            );
+            // I need to stop to relay on MovieDB API so much
+            // Instead of downloading specific Movie details
+            // I should Iterate through the list of movies get their details
+            // And store it in the list.
+            debugPrint("⚠️ Something from API "
+                "doesn't load up If you see this "
+                "message it means you received error from API");
+
+            context.read<MovieDataBloc>().add(LoadMovieDataEvent());
+            return const CircularProgressIndicator();
+
+
           }
 
           return Center(
