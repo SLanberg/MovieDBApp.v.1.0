@@ -16,7 +16,7 @@ class MovieDataLoadedState extends MovieDataState {
   final List<MovieModel> popularMoviesApiResult;
   final List<MovieModel> topRatedApiResult;
   final List<MovieModel> upcomingApiResult;
-  // final String poste
+  final String homePageHeroPoster;
   final int latestMoviesCurrentPage;
   final int popularMoviesCurrentPage;
   final int topRatedMoviesCurrentPage;
@@ -28,6 +28,7 @@ class MovieDataLoadedState extends MovieDataState {
     required this.popularMoviesApiResult,
     required this.topRatedApiResult,
     required this.upcomingApiResult,
+    required this.homePageHeroPoster,
     required this.latestMoviesCurrentPage,
     required this.popularMoviesCurrentPage,
     required this.topRatedMoviesCurrentPage,
@@ -40,6 +41,7 @@ class MovieDataLoadedState extends MovieDataState {
     List<MovieModel>? popularMoviesApiResult,
     List<MovieModel>? topRatedApiResult,
     List<MovieModel>? upcomingApiResult,
+    String? homePageHeroPoster,
     int? latestMoviesCurrentPage,
     int? popularMoviesCurrentPage,
     int? topRatedMoviesCurrentPage,
@@ -56,6 +58,7 @@ class MovieDataLoadedState extends MovieDataState {
       topRatedMoviesCurrentPage: topRatedMoviesCurrentPage ?? this.topRatedMoviesCurrentPage,
       upcomingCurrentPage: upcomingCurrentPage ?? this.upcomingCurrentPage,
         isLatestMovieSectionExpanded: isLatestMovieSectionExpanded ?? this.isLatestMovieSectionExpanded,
+        homePageHeroPoster: homePageHeroPoster ?? this.homePageHeroPoster,
     );
   }
 
@@ -64,6 +67,7 @@ class MovieDataLoadedState extends MovieDataState {
     latestMoviesApiResult,
     popularMoviesApiResult,
     topRatedApiResult,
+    homePageHeroPoster,
     upcomingApiResult,
     latestMoviesCurrentPage,
     popularMoviesCurrentPage,

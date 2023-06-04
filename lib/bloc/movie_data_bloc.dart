@@ -1,4 +1,6 @@
 // Package imports:
+import 'dart:math';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -27,7 +29,9 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
           List<MovieModel>? popularResult = await movieRepository.getMovieData(
               "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=${dotenv.env['API_KEY']}");
 
-          if (apiResult == null || popularResult == null) {
+
+
+        if (apiResult == null || popularResult == null) {
             emit(MovieDataErrorState());
           } else {
             emit(MovieDataLoadedState(
@@ -40,6 +44,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
               popularMoviesCurrentPage: 1,
               topRatedMoviesCurrentPage: 1,
               upcomingCurrentPage: 1,
+              homePageHeroPoster: apiResult[Random().nextInt(apiResult.length)].posterPath ?? "",
             ));
           }
         }

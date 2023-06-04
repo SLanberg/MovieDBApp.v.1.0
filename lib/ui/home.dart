@@ -128,7 +128,10 @@ class _HomePageState extends State<HomePage> {
                 state.latestMoviesApiResult,
                 state.popularMoviesApiResult,
                 state.topRatedApiResult,
-                state.upcomingApiResult);
+                state.upcomingApiResult,
+              state.homePageHeroPoster,
+
+            );
           } else if (state is MovieDataErrorState) {
             // I need to stop to relay on MovieDB API so much
             // Instead of downloading specific Movie details
@@ -160,6 +163,7 @@ class _HomePageState extends State<HomePage> {
     List<MovieModel> popularApiResult,
     List<MovieModel> topRatedApiResult,
     List<MovieModel> upcomingApiResult,
+      String? homePageHeroPoster,
   ) {
     return CustomScrollView(
       slivers: [
@@ -173,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: CachedNetworkImageProvider(
-                      'http://image.tmdb.org/t/p/w500/${latestApiResult[Random().nextInt(latestApiResult.length)].posterPath}',
+                      'http://image.tmdb.org/t/p/w500/$homePageHeroPoster',
                     ),
                     fit: BoxFit.fill,
                   ),
