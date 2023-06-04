@@ -236,30 +236,30 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
     });
 
     on<ClickToSeeMovieDetails>((event, emit) async {
-      if (state is MovieDataInitialState) {
-        try {
-          MovieDetailModel? movieDetailsApiResult =
-          await movieDetailRepository.getMovieDetail(
-              "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
-          if (movieDetailsApiResult != null) {
-            emit(MovieDetailsState(movieDetailsApiResult: movieDetailsApiResult));
-          }
-        } catch (e) {
-          // Handle any errors that occurred during API request
-        }
-      } else if (state is MovieDetailsState) {
-        try {
-          MovieDetailModel? refreshedMovieDetailsApiResult =
-          await movieDetailRepository.getMovieDetail(
-              "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
-          if (refreshedMovieDetailsApiResult != null) {
-            emit(MovieDetailsState(movieDetailsApiResult: refreshedMovieDetailsApiResult));
-          }
-        } catch (e) {
-          // Handle any errors that occurred during API request
-        }
-      }
+      // if (state is MovieDataInitialState) {
+      //     try {
+      //       MovieDetailModel? movieDetailsApiResult =
+      //       await movieDetailRepository.getMovieDetail(
+      //           "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+      //       if (movieDetailsApiResult != null) {
+      //         emit(MovieDetailsState(movieDetailsApiResult: movieDetailsApiResult));
+      //       }
+      //     } catch (e) {
+      //       // Handle any errors that occurred during API request
+      //     }
+      //   } else if (state is MovieDetailsState) {
+      //     try {
+      //       MovieDetailModel? refreshedMovieDetailsApiResult =
+      //       await movieDetailRepository.getMovieDetail(
+      //           "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+      //       if (refreshedMovieDetailsApiResult != null) {
+      //         emit(MovieDetailsState(movieDetailsApiResult: refreshedMovieDetailsApiResult));
+      //       }
+      //     } catch (e) {
+      //       // Handle any errors that occurred during API request
+      //     }
+      //   }
+      // });
     });
-
   }
 }
