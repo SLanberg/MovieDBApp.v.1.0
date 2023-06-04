@@ -11,10 +11,6 @@ import 'package:sportsbet_task/repository/movie_repository.dart';
 import 'bloc/movie_data_bloc.dart';
 import 'ui/home.dart';
 
-
-import 'package:cached_network_image/cached_network_image.dart';
-
-
 void main() async {
   await dotenv.load(fileName: ".env");
   runApp(
