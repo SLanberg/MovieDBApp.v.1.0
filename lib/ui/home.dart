@@ -15,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
 import 'package:sportsbet_task/models/movie_model.dart';
 import '../widgets/custom_expansion_container.dart';
+import 'detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -38,6 +39,20 @@ class _HomePageState extends State<HomePage> {
   bool latestMoviesExpanded = true;
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (this.widget != oldWidget) {
+      print('Not equal');
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     _setUpTimedMoviePull();
@@ -59,10 +74,7 @@ class _HomePageState extends State<HomePage> {
   _setUpTimedPosterChange() {
     posterTimer = Timer.periodic(const Duration(seconds: 90), (timer) {
       context.read<MovieDataBloc>().add(TimeToChangePosterEvent());
-      if (kDebugMode) {
-        print("Poster changed");
-        print("Don't forget to make moving poster");
-      }
+      if (kDebugMode) {}
     });
   }
 
@@ -146,24 +158,24 @@ class _HomePageState extends State<HomePage> {
 
           return Center(
               child: Text(
-            "We've got into undefined state. Chek the state parameter",
-            style: Theme.of(context)
-                .textTheme
-                .headlineMedium
-                ?.copyWith(color: Colors.white),
-          ));
+                "We've got into undefined state. Chek the state parameter",
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium
+                    ?.copyWith(color: Colors.white),
+              ));
         },
       ),
     );
   }
 
   Widget buildHomeSections(
-    List<MovieModel> latestApiResult,
-    List<MovieModel> popularApiResult,
-    List<MovieModel> topRatedApiResult,
-    List<MovieModel> upcomingApiResult,
-    String? homePageHeroPoster,
-  ) {
+      List<MovieModel> latestApiResult,
+      List<MovieModel> popularApiResult,
+      List<MovieModel> topRatedApiResult,
+      List<MovieModel> upcomingApiResult,
+      String? homePageHeroPoster,
+      ) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -244,8 +256,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _showImageDetails(
-      BuildContext context, int imageIndex, List<MovieModel> apiResult) {
+  void _showImageDetails(BuildContext context, int imageIndex,
+      List<MovieModel> apiResult, int? movieId) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -254,177 +266,9 @@ class _HomePageState extends State<HomePage> {
             top: Radius.circular(10.0),
           ),
         ),
-        builder: (context) => DraggableScrollableSheet(
-              expand: false,
-              initialChildSize: 0.75,
-              maxChildSize: 1,
-              minChildSize: 0.50,
-              builder: (context, scrollController) => Scaffold(
-                body: Center(
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 30.0,
-                        ),
-                        SizedBox(
-                          width: 350,
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: apiResult[imageIndex].posterPath != null
-                                    ? CachedNetworkImage(
-                                        imageUrl:
-                                            "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
-                                        height: 490,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.asset(
-                                        'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
-                                        height: 490,
-                                        fit: BoxFit.cover,
-                                      ),
-                              ),
-
-                              ClipRRect(
-                                child: ListTile(
-                                  leading: const Icon(Icons.info),
-                                  title: Text('${apiResult[imageIndex].title}'),
-                                  onTap: () {
-                                    // Navigator.pop(context); // Close the bottom sheet
-                                    // Handle "View Details" action
-                                    _handleViewDetails(imageIndex, apiResult);
-                                  },
-                                ),
-                              ),
-
-                              BlocBuilder<MovieDataBloc, MovieDataState>(
-                                builder: (context, state) {
-                                  if (state is MovieDataInitialState) {
-                                    return const CircularProgressIndicator();
-                                  } else if (state is MovieDetailsState) {
-                                    if (state.movieDetailsApiResult.genres !=
-                                        null) {
-                                      final genres =
-                                          state.movieDetailsApiResult.genres;
-                                      final genresString = genres != null
-                                          ? genres
-                                              .map((genre) => genre.name)
-                                              .join(', ')
-                                          : '';
-                                      return ListTile(
-                                        leading: const Icon(Icons.add_box),
-                                        title: Text(
-                                          genresString,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,
-                                        ),
-                                      );
-                                    }
-                                    return ListTile(
-                                        leading:
-                                            const Icon(Icons.remove_red_eye),
-                                        title: Text(
-                                          'Unknown',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,
-                                        ));
-                                  } else {
-                                    return const CircularProgressIndicator();
-                                  }
-                                },
-                              ),
-
-                              ListTile(
-                                  leading: const Icon(Icons.star_border),
-                                  title: apiResult[imageIndex].voteAverage !=
-                                          null
-                                      ? Text(
-                                          '${apiResult[imageIndex].voteAverage}')
-                                      : null),
-
-                              BlocBuilder<MovieDataBloc, MovieDataState>(
-                                builder: (context, state) {
-                                  context.read<MovieDataBloc>().add(
-                                      ClickToSeeMovieDetails(
-                                          apiResult[imageIndex].id!));
-
-                                  if (state is MovieDataInitialState) {
-                                    return const CircularProgressIndicator();
-                                  } else if (state is MovieDetailsState) {
-                                    return ListTile(
-                                        leading:
-                                            const Icon(Icons.remove_red_eye),
-                                        title: state.movieDetailsApiResult
-                                                    .status !=
-                                                null
-                                            ? Text(
-                                                '${state.movieDetailsApiResult.status}')
-                                            : null);
-                                  } else {
-                                    return const CircularProgressIndicator();
-                                  }
-                                },
-                              ),
-
-                              ListTile(
-                                leading: const Icon(Icons.calendar_month),
-                                title: apiResult[imageIndex].releaseDate != null
-                                    ? Text(DateFormat('yyyy-MM-dd').format(
-                                        apiResult[imageIndex].releaseDate!))
-                                    : null,
-                              ),
-
-                              ListTile(
-                                  leading:
-                                      const Icon(Icons.contact_support_rounded),
-                                  title: apiResult[imageIndex].overview != null
-                                      ? Text(
-                                          '${apiResult[imageIndex].overview}')
-                                      : null),
-
-                              // In the response, if video is available show a play icon
-                              // (use any free resource available).
-                              // Clicking on this icon snackbar should appear with movie name.
-                              ListTile(
-                                  leading: apiResult[imageIndex].video !=
-                                              null &&
-                                          apiResult[imageIndex].video != false
-                                      ? GestureDetector(
-                                          onTap: () {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  "${apiResult[imageIndex].title}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                          color: Colors.white),
-                                                ),
-                                                backgroundColor: Colors.green,
-                                                duration:
-                                                    const Duration(seconds: 1),
-                                              ),
-                                            );
-                                          },
-                                          child: const Icon(Icons.play_arrow))
-                                      : null),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ));
+        builder: (context) {
+          return DetailsPage(context, imageIndex, apiResult, movieId);
+        });
   }
 
   Widget _buildLoadMoreIndicator() {
@@ -455,9 +299,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildMovieList(
-    List<MovieModel> movieList,
-    ScrollController scrollController,
-  ) {
+      List<MovieModel> movieList,
+      ScrollController scrollController,
+      ) {
     return SizedBox(
       height: 300.0,
       child: ListView.builder(
@@ -476,27 +320,28 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      _showImageDetails(context, index, movieList);
+                      _showImageDetails(
+                          context, index, movieList, movieList[index].id);
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: movieList[index].posterPath != null
                           ? CachedNetworkImage(
-                              imageUrl:
-                                  "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
-                              width: 180,
-                              fit: BoxFit.cover,
-                              errorWidget: (BuildContext context, String url,
-                                  dynamic error) {
-                                return Image.asset(
-                                    'images/No-Image-Placeholder.png');
-                              },
-                            )
+                        imageUrl:
+                        "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
+                        width: 180,
+                        fit: BoxFit.cover,
+                        errorWidget: (BuildContext context, String url,
+                            dynamic error) {
+                          return Image.asset(
+                              'images/No-Image-Placeholder.png');
+                        },
+                      )
                           : Image.asset(
-                              'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
-                              width: 180,
-                              fit: BoxFit.cover,
-                            ),
+                        'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                        width: 180,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
