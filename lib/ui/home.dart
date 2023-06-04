@@ -446,7 +446,7 @@ class _HomePageState extends State<HomePage> {
   void _handleViewDetails(int imageIndex, List<MovieModel> apiResult) {
     // Replace with your logic to handle "View Details" action
     if (kDebugMode) {
-      print('View Details for Image ${imageIndex + 1}');
+      print('Make a copy for ${imageIndex + 1} post release feature');
     }
   }
 
