@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math';
 
 // Flutter imports:
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -273,8 +274,9 @@ class _HomePageState extends State<HomePage> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: apiResult[imageIndex].posterPath != null
-                                    ? Image.network(
-                                        "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
+                                    ? CachedNetworkImage(
+                                        imageUrl:
+                                            "http://image.tmdb.org/t/p/w500/${apiResult[imageIndex].posterPath}",
                                         height: 490,
                                         fit: BoxFit.cover,
                                       )
@@ -477,12 +479,13 @@ class _HomePageState extends State<HomePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: movieList[index].posterPath != null
-                          ? Image.network(
-                              "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
+                          ? CachedNetworkImage(
+                              imageUrl:
+                                  "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
                               width: 180,
                               fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace? stackTrace) {
+                              errorWidget: (BuildContext context, String url,
+                                  dynamic error) {
                                 return Image.asset(
                                     'images/No-Image-Placeholder.png');
                               },
