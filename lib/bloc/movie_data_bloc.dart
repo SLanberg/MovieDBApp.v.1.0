@@ -1,6 +1,10 @@
-// Package imports:
+// Dart imports:
 import 'dart:math';
 
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+
+// Package imports:
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -230,13 +234,19 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         await movieDetailRepository.getMovieDetail(
             "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
 
-        print("$movieDetailsApiResult movieDetailsApiResult");
+        if (kDebugMode) {
+          print("$movieDetailsApiResult movieDetailsApiResult");
+        }
         if (movieDetailsApiResult != null) {
-          print('Im not null and going through');
+          if (kDebugMode) {
+            print('Im not null and going through');
+          }
           emit(MovieDetailsState(movieDetailsApiResult: movieDetailsApiResult));
         }
       } catch (e) {
-        print('Error happened here ClickToSeeMovieDetails');
+        if (kDebugMode) {
+          print('Error happened here ClickToSeeMovieDetails');
+        }
       }
     });
   }

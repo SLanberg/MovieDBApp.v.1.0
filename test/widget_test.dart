@@ -18,7 +18,7 @@ import 'package:sportsbet_task/widgets/custom_expansion_container.dart';
 void main() {
   testWidgets('Check if movie containers are presented', (WidgetTester tester) async {
     // Build the Home widget
-    await tester.pumpWidget(MaterialApp(home: HomePage()));
+    await tester.pumpWidget(const MaterialApp(home: HomePage()));
 
     // Find the containers by their titles
     final latestMoviesFinder = find.byWidgetPredicate((widget) =>

@@ -45,3 +45,8 @@ To fetch detailed movie information and check for video availability, the app ut
 
 ## Conclusion
 The Flutter Movie App provides users with a visually appealing interface to explore different movie categories. The Main Screen allows users to view and scroll through movies in collapsible sections. The Details Screen presents additional information about a selected movie and allows users to play available videos. With its intuitive design and smooth navigation, the Flutter Movie App offers an enjoyable movie browsing experience.
+
+## Useful commands
+
+To sort imports in alphabetical order we use https://pub.dev/packages/import_sorter:
+Run in the terminal "flutter pub run import_sorter:main"

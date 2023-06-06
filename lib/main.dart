@@ -17,7 +17,7 @@ void main() async {
     BlocProvider<MovieDataBloc>(
       create: (context) =>
           MovieDataBloc(MovieRepository(), MovieDetailRepository()),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
                 MovieDataBloc(MovieRepository(), MovieDetailRepository()),
           ),
         ],
-        child: HomePage(),
+        child: const HomePage(),
       ),
     );
   }
