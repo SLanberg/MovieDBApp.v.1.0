@@ -94,7 +94,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   final snackBar = SnackBar(
                                     duration: const Duration(seconds: 1),
                                     content: Text(
-                                      'Copied: ${widget.apiResult[widget.imageIndex].title}',
+                                      'Copied: "${widget.apiResult[widget.imageIndex].title}"',
                                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
                                     ),
                                     backgroundColor: Colors.green,
