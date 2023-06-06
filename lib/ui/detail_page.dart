@@ -96,14 +96,19 @@ class _DetailsPageState extends State<DetailsPage> {
                                   //  CircularProgressIndicators they handle in else block
                                   return const CircularProgressIndicator();
                                 } else if (state is MovieDetailsState) {
-                                  return ListTile(
-                                      leading: const Icon(Icons.remove_red_eye),
-                                      title: state.movieDetailsApiResult
-                                          .status !=
-                                          null
-                                          ? Text(
-                                          '${state.movieDetailsApiResult.status}')
-                                          : null);
+                                  return Column(
+                                    children: [
+                                      ListTile(
+                                          leading:
+                                              const Icon(Icons.remove_red_eye),
+                                          title: state.movieDetailsApiResult
+                                                      .status !=
+                                                  null
+                                              ? Text(
+                                                  '${state.movieDetailsApiResult.status}')
+                                              : null),
+                                    ],
+                                  );
                                 } else {
                                   // TODO: Look in, maybe we don't need so many
                                   //  CircularProgressIndicators they handle in else block
@@ -112,32 +117,29 @@ class _DetailsPageState extends State<DetailsPage> {
                               },
                             ),
 
-
-
                             ListTile(
                               leading: const Icon(Icons.calendar_month),
                               title: widget.apiResult[widget.imageIndex]
-                                  .releaseDate !=
-                                  null
+                                          .releaseDate !=
+                                      null
                                   ? Text(formatDateWithSuffix(widget
-                                  .apiResult[widget.imageIndex]
-                                  .releaseDate!))
+                                      .apiResult[widget.imageIndex]
+                                      .releaseDate!))
                                   : null,
                             ),
 
                             ListTile(
                                 leading: const Icon(Icons.star_border),
                                 title: widget.apiResult[widget.imageIndex]
-                                    .voteAverage !=
-                                    null
+                                            .voteAverage !=
+                                        null
                                     ? Text(
-                                    '${widget.apiResult[widget.imageIndex].voteAverage}')
+                                        '${widget.apiResult[widget.imageIndex].voteAverage}')
                                     : null),
 
                             BlocBuilder<MovieDataBloc, MovieDataState>(
                               builder: (context, state) {
-                                // TODO 2
-                                print('state is: $state');
+                                // print('state is: $state');
                                 if (state is MovieDetailsState) {
                                   if (state.movieDetailsApiResult.genres !=
                                       null) {
@@ -145,17 +147,42 @@ class _DetailsPageState extends State<DetailsPage> {
                                         state.movieDetailsApiResult.genres;
                                     final genresString = genres != null
                                         ? genres
-                                        .map((genre) => genre.name)
-                                        .join(', ')
+                                            .map((genre) => genre.name)
+                                            .join(', ')
                                         : '';
-                                    return ListTile(
-                                      leading: const Icon(Icons.add_box),
-                                      title: Text(
-                                        genresString,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                      ),
+                                    return Column(
+                                      children: [
+                                        if (state.movieDetailsApiResult
+                                                    .tagline !=
+                                                null &&
+                                            state.movieDetailsApiResult
+                                                    .tagline !=
+                                                "")
+                                          ListTile(
+                                            leading: Image.asset(
+                                              "icons/tagline-icon.jpg",
+                                              width: 20,
+                                            ),
+                                            title: Text(
+                                              '“${state.movieDetailsApiResult.tagline}”',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.copyWith(
+                                                      color: Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                        ListTile(
+                                          leading: const Icon(Icons.add_box),
+                                          title: Text(
+                                            genresString,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ],
                                     );
                                   }
                                   return ListTile(
@@ -175,12 +202,12 @@ class _DetailsPageState extends State<DetailsPage> {
 
                             ListTile(
                                 leading:
-                                const Icon(Icons.contact_support_rounded),
+                                    const Icon(Icons.contact_support_rounded),
                                 title: widget.apiResult[widget.imageIndex]
-                                    .overview !=
-                                    null
+                                            .overview !=
+                                        null
                                     ? Text(
-                                    '${widget.apiResult[widget.imageIndex].overview}')
+                                        '${widget.apiResult[widget.imageIndex].overview}')
                                     : null),
 
                             // In the response, if video is available show a play icon
