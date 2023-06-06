@@ -1,11 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
 import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
 import 'package:sportsbet_task/models/movie_model.dart';
-
 import '../utils/date_utils.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -13,8 +16,9 @@ class DetailsPage extends StatefulWidget {
     this.context,
     this.imageIndex,
     this.apiResult,
-    this.movieId,
-  );
+    this.movieId, {
+    super.key,
+  });
   final BuildContext context;
   final int imageIndex;
   final List<MovieModel> apiResult;
@@ -25,7 +29,6 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-
   @override
   void initState() {
     context
@@ -33,7 +36,6 @@ class _DetailsPageState extends State<DetailsPage> {
         .add(ClickToSeeMovieDetails(widget.apiResult[widget.imageIndex].id!));
     super.initState();
   }
-
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -91,17 +93,25 @@ class _DetailsPageState extends State<DetailsPage> {
                                   title: Text(
                                       '${widget.apiResult[widget.imageIndex].title}'),
                                   onTap: () {
-                                    String title = widget.apiResult[widget.imageIndex].title ?? "";
-                                    Clipboard.setData(ClipboardData(text: title));
+                                    String title = widget
+                                            .apiResult[widget.imageIndex]
+                                            .title ??
+                                        "";
+                                    Clipboard.setData(
+                                        ClipboardData(text: title));
                                     final snackBar = SnackBar(
                                       duration: const Duration(seconds: 1),
                                       content: Text(
                                         'Copied: "${widget.apiResult[widget.imageIndex].title}"',
-                                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
+                                            ?.copyWith(color: Colors.white),
                                       ),
                                       backgroundColor: Colors.green,
                                     );
-                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
                                   },
                                 ),
 
@@ -119,8 +129,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                     return Column(
                                       children: [
                                         ListTile(
-                                            leading:
-                                                const Icon(Icons.remove_red_eye),
+                                            leading: const Icon(
+                                                Icons.remove_red_eye),
                                             title: state.movieDetailsApiResult
                                                         .status !=
                                                     null
@@ -161,12 +171,23 @@ class _DetailsPageState extends State<DetailsPage> {
                                 builder: (context, state) {
                                   // print('state is: $state');
                                   if (state is MovieDetailsState) {
-                                    if (state.movieDetailsApiResult.genres != null) {
-                                      final genres = state.movieDetailsApiResult.genres;
-                                      final genresString = genres != null ? genres.map((genre) => genre.name).join(', ') : '';
+                                    if (state.movieDetailsApiResult.genres !=
+                                        null) {
+                                      final genres =
+                                          state.movieDetailsApiResult.genres;
+                                      final genresString = genres != null
+                                          ? genres
+                                              .map((genre) => genre.name)
+                                              .join(', ')
+                                          : '';
                                       return Column(
                                         children: [
-                                          if (state.movieDetailsApiResult.tagline != null && state.movieDetailsApiResult.tagline != "")
+                                          if (state.movieDetailsApiResult
+                                                      .tagline !=
+                                                  null &&
+                                              state.movieDetailsApiResult
+                                                      .tagline !=
+                                                  "")
                                             ListTile(
                                               leading: const Icon(Icons.quora),
                                               title: Text(
@@ -183,7 +204,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                             leading: const Icon(Icons.add_box),
                                             title: Text(
                                               genresString,
-                                              style: Theme.of(context).textTheme.bodyMedium,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
                                             ),
                                           ),
                                         ],
@@ -227,14 +250,20 @@ class _DetailsPageState extends State<DetailsPage> {
                                       ? GestureDetector(
                                           onTap: () {
                                             final snackBar = SnackBar(
-                                              duration: const Duration(seconds: 1),
+                                              duration:
+                                                  const Duration(seconds: 1),
                                               content: Text(
                                                 '${widget.apiResult[widget.imageIndex].title}',
-                                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyLarge
+                                                    ?.copyWith(
+                                                        color: Colors.white),
                                               ),
                                               backgroundColor: Colors.green,
                                             );
-                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
                                           },
                                           child: const Icon(Icons.play_arrow))
                                       : null),
