@@ -115,45 +115,47 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: BlocBuilder<MovieDataBloc, MovieDataState>(
-        builder: (context, state) {
-          if (state is MovieDataInitialState) {
-            context.read<MovieDataBloc>().add(LoadMovieDataEvent());
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is MovieDataLoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is MovieDataLoadedState) {
-            return buildHomeSections(
-              state.latestMoviesApiResult,
-              state.popularMoviesApiResult,
-              state.topRatedApiResult,
-              state.upcomingApiResult,
-              state.homePageHeroPoster,
-            );
-          } else if (state is MovieDataErrorState) {
-            // I need to stop to relay on MovieDB API so much
-            // Instead of downloading specific Movie details
-            // I should Iterate through the list of movies get their details
-            // And store it in the list.
-            debugPrint("⚠️ Something from API "
-                "doesn't load up If you see this "
-                "message it means you received error from API");
+    return ScaffoldMessenger(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: BlocBuilder<MovieDataBloc, MovieDataState>(
+          builder: (context, state) {
+            if (state is MovieDataInitialState) {
+              context.read<MovieDataBloc>().add(LoadMovieDataEvent());
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is MovieDataLoadingState) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is MovieDataLoadedState) {
+              return buildHomeSections(
+                state.latestMoviesApiResult,
+                state.popularMoviesApiResult,
+                state.topRatedApiResult,
+                state.upcomingApiResult,
+                state.homePageHeroPoster,
+              );
+            } else if (state is MovieDataErrorState) {
+              // I need to stop to relay on MovieDB API so much
+              // Instead of downloading specific Movie details
+              // I should Iterate through the list of movies get their details
+              // And store it in the list.
+              debugPrint("⚠️ Something from API "
+                  "doesn't load up If you see this "
+                  "message it means you received error from API");
 
-            context.read<MovieDataBloc>().add(LoadMovieDataEvent());
-            return const CircularProgressIndicator();
-          }
+              context.read<MovieDataBloc>().add(LoadMovieDataEvent());
+              return const CircularProgressIndicator();
+            }
 
-          return Center(
-              child: Text(
-                "We've got into undefined state. Chek the state parameter",
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium
-                    ?.copyWith(color: Colors.white),
-              ));
-        },
+            return Center(
+                child: Text(
+                  "We've got into undefined state. Chek the state parameter",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(color: Colors.white),
+                ));
+          },
+        ),
       ),
     );
   }
@@ -277,13 +279,6 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
-  }
-
-  // You can write more logic when user press on detail
-  void _handleViewDetails(int imageIndex, List<MovieModel> apiResult) {
-    // Replace with your logic to handle "View Details" action
-
-    // Here add copy to clipboard functionality
   }
 
   Widget _buildMovieList(

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
 import 'package:sportsbet_task/models/movie_model.dart';
 
@@ -25,6 +25,7 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+
   @override
   void initState() {
     context
@@ -32,6 +33,9 @@ class _DetailsPageState extends State<DetailsPage> {
         .add(ClickToSeeMovieDetails(widget.apiResult[widget.imageIndex].id!));
     super.initState();
   }
+
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,7 @@ class _DetailsPageState extends State<DetailsPage> {
             maxChildSize: 1,
             minChildSize: 0.50,
             builder: (context, scrollController) => Scaffold(
+              key: _scaffoldKey,
               body: Center(
                 child: SingleChildScrollView(
                   controller: scrollController,
@@ -75,15 +80,28 @@ class _DetailsPageState extends State<DetailsPage> {
                                     ),
                             ),
 
-                            ListTile(
-                              leading: const Icon(Icons.info),
-                              title: Text(
-                                  '${widget.apiResult[widget.imageIndex].title}'),
-                              onTap: () {
-                                // Navigator.pop(context); // Close the bottom sheet
-                                // Handle "View Details" action
-                              },
-                            ),
+                            if (widget.apiResult[widget.imageIndex].title !=
+                                    null &&
+                                widget.apiResult[widget.imageIndex].title !=
+                                    null)
+                              ListTile(
+                                leading: const Icon(Icons.info),
+                                title: Text(
+                                    '${widget.apiResult[widget.imageIndex].title}'),
+                                onTap: () {
+                                  String title = widget.apiResult[widget.imageIndex].title ?? "";
+                                  Clipboard.setData(ClipboardData(text: title));
+                                  final snackBar = SnackBar(
+                                    duration: const Duration(seconds: 1),
+                                    content: Text(
+                                      'Copied: ${widget.apiResult[widget.imageIndex].title}',
+                                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                                    ),
+                                    backgroundColor: Colors.green,
+                                  );
+                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                },
+                              ),
 
                             BlocBuilder<MovieDataBloc, MovieDataState>(
                               builder: (context, state) {
@@ -141,23 +159,12 @@ class _DetailsPageState extends State<DetailsPage> {
                               builder: (context, state) {
                                 // print('state is: $state');
                                 if (state is MovieDetailsState) {
-                                  if (state.movieDetailsApiResult.genres !=
-                                      null) {
-                                    final genres =
-                                        state.movieDetailsApiResult.genres;
-                                    final genresString = genres != null
-                                        ? genres
-                                            .map((genre) => genre.name)
-                                            .join(', ')
-                                        : '';
+                                  if (state.movieDetailsApiResult.genres != null) {
+                                    final genres = state.movieDetailsApiResult.genres;
+                                    final genresString = genres != null ? genres.map((genre) => genre.name).join(', ') : '';
                                     return Column(
                                       children: [
-                                        if (state.movieDetailsApiResult
-                                                    .tagline !=
-                                                null &&
-                                            state.movieDetailsApiResult
-                                                    .tagline !=
-                                                "")
+                                        if (state.movieDetailsApiResult.tagline != null && state.movieDetailsApiResult.tagline != "")
                                           ListTile(
                                             leading: const Icon(Icons.quora),
                                             title: Text(
@@ -166,17 +173,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                                   .textTheme
                                                   .bodyMedium
                                                   ?.copyWith(
-                                                      color: Colors.grey,
-                                              ),
+                                                    color: Colors.grey,
+                                                  ),
                                             ),
                                           ),
                                         ListTile(
                                           leading: const Icon(Icons.add_box),
                                           title: Text(
                                             genresString,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
+                                            style: Theme.of(context).textTheme.bodyMedium,
                                           ),
                                         ),
                                       ],
@@ -219,22 +224,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                             false
                                     ? GestureDetector(
                                         onTap: () {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                "${widget.apiResult[widget.imageIndex].title}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: Colors.white),
-                                              ),
-                                              backgroundColor: Colors.green,
-                                              duration:
-                                                  const Duration(seconds: 1),
+                                          final snackBar = SnackBar(
+                                            duration: const Duration(seconds: 1),
+                                            content: Text(
+                                              '${widget.apiResult[widget.imageIndex].title}',
+                                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
                                             ),
+                                            backgroundColor: Colors.green,
                                           );
+                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                         },
                                         child: const Icon(Icons.play_arrow))
                                     : null),
