@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
 import 'package:sportsbet_task/models/movie_model.dart';
 
+import '../utils/date_utils.dart';
+
 class DetailsPage extends StatefulWidget {
   const DetailsPage(
     this.context,
@@ -25,7 +27,9 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
-    context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(widget.apiResult[widget.imageIndex].id!));
+    context
+        .read<MovieDataBloc>()
+        .add(ClickToSeeMovieDetails(widget.apiResult[widget.imageIndex].id!));
     super.initState();
   }
 
@@ -83,6 +87,55 @@ class _DetailsPageState extends State<DetailsPage> {
 
                             BlocBuilder<MovieDataBloc, MovieDataState>(
                               builder: (context, state) {
+                                if (state is MovieDataInitialState) {
+                                  // This CirculateProgress
+                                  // you see while you waiting for data to load
+                                  // and when even not triggered
+
+                                  // TODO: Look in, maybe we don't need so many
+                                  //  CircularProgressIndicators they handle in else block
+                                  return const CircularProgressIndicator();
+                                } else if (state is MovieDetailsState) {
+                                  return ListTile(
+                                      leading: const Icon(Icons.remove_red_eye),
+                                      title: state.movieDetailsApiResult
+                                          .status !=
+                                          null
+                                          ? Text(
+                                          '${state.movieDetailsApiResult.status}')
+                                          : null);
+                                } else {
+                                  // TODO: Look in, maybe we don't need so many
+                                  //  CircularProgressIndicators they handle in else block
+                                  return const CircularProgressIndicator();
+                                }
+                              },
+                            ),
+
+
+
+                            ListTile(
+                              leading: const Icon(Icons.calendar_month),
+                              title: widget.apiResult[widget.imageIndex]
+                                  .releaseDate !=
+                                  null
+                                  ? Text(formatDateWithSuffix(widget
+                                  .apiResult[widget.imageIndex]
+                                  .releaseDate!))
+                                  : null,
+                            ),
+
+                            ListTile(
+                                leading: const Icon(Icons.star_border),
+                                title: widget.apiResult[widget.imageIndex]
+                                    .voteAverage !=
+                                    null
+                                    ? Text(
+                                    '${widget.apiResult[widget.imageIndex].voteAverage}')
+                                    : null),
+
+                            BlocBuilder<MovieDataBloc, MovieDataState>(
+                              builder: (context, state) {
                                 // TODO 2
                                 print('state is: $state');
                                 if (state is MovieDetailsState) {
@@ -92,8 +145,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                         state.movieDetailsApiResult.genres;
                                     final genresString = genres != null
                                         ? genres
-                                            .map((genre) => genre.name)
-                                            .join(', ')
+                                        .map((genre) => genre.name)
+                                        .join(', ')
                                         : '';
                                     return ListTile(
                                       leading: const Icon(Icons.add_box),
@@ -121,61 +174,13 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
 
                             ListTile(
-                                leading: const Icon(Icons.star_border),
-                                title: widget.apiResult[widget.imageIndex]
-                                            .voteAverage !=
-                                        null
-                                    ? Text(
-                                        '${widget.apiResult[widget.imageIndex].voteAverage}')
-                                    : null),
-
-                            BlocBuilder<MovieDataBloc, MovieDataState>(
-                              builder: (context, state) {
-                                if (state is MovieDataInitialState) {
-
-                                  // This CirculateProgress
-                                  // you see while you waiting for data to load
-                                  // and when even not triggered
-
-                                  // TODO: Look in, maybe we don't need so many
-                                  //  CircularProgressIndicators they handle in else block
-                                  return const CircularProgressIndicator();
-                                } else if (state is MovieDetailsState) {
-                                  return ListTile(
-                                      leading: const Icon(Icons.remove_red_eye),
-                                      title: state.movieDetailsApiResult
-                                                  .status !=
-                                              null
-                                          ? Text(
-                                              '${state.movieDetailsApiResult.status}')
-                                          : null);
-                                } else {
-
-                                  // TODO: Look in, maybe we don't need so many
-                                  //  CircularProgressIndicators they handle in else block
-                                  return const CircularProgressIndicator();
-                                }
-                              },
-                            ),
-
-                            ListTile(
-                              leading: const Icon(Icons.calendar_month),
-                              title: widget.apiResult[widget.imageIndex]
-                                          .releaseDate !=
-                                      null
-                                  ? Text(DateFormat('yyyy-MM-dd').format(widget
-                                      .apiResult[widget.imageIndex]
-                                      .releaseDate!))
-                                  : null,
-                            ),
-                            ListTile(
                                 leading:
-                                    const Icon(Icons.contact_support_rounded),
+                                const Icon(Icons.contact_support_rounded),
                                 title: widget.apiResult[widget.imageIndex]
-                                            .overview !=
-                                        null
+                                    .overview !=
+                                    null
                                     ? Text(
-                                        '${widget.apiResult[widget.imageIndex].overview}')
+                                    '${widget.apiResult[widget.imageIndex].overview}')
                                     : null),
 
                             // In the response, if video is available show a play icon
@@ -219,7 +224,6 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           );
         } else {
-
           // This one you see if something went
           // wrong and your state is not the one you need
           return const SizedBox(

@@ -42,15 +42,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void didUpdateWidget(covariant HomePage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (widget != oldWidget) {
-      print('Not equal');
-    }
-  }
-
-  @override
   void initState() {
     super.initState();
     _setUpTimedMoviePull();
