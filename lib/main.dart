@@ -15,7 +15,8 @@ void main() async {
   await dotenv.load(fileName: ".env");
   runApp(
     BlocProvider<MovieDataBloc>(
-      create: (context) => MovieDataBloc(MovieRepository(), MovieDetailRepository()),
+      create: (context) =>
+          MovieDataBloc(MovieRepository(), MovieDetailRepository()),
       child: MyApp(),
     ),
   );
@@ -35,11 +36,29 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         primarySwatch: Colors.grey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(
+            fontFamily: "Roboto",
+            fontSize: 20,
+            letterSpacing: 0,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+          bodyMedium: TextStyle(
+            fontFamily: "Roboto",
+            fontSize: 14,
+            letterSpacing: 0,
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
+          ),
+        )
       ),
+
       home: MultiBlocProvider(
         providers: [
           BlocProvider<MovieDataBloc>(
-            create: (context) => MovieDataBloc(MovieRepository(), MovieDetailRepository()),
+            create: (context) =>
+                MovieDataBloc(MovieRepository(), MovieDetailRepository()),
           ),
         ],
         child: HomePage(),
