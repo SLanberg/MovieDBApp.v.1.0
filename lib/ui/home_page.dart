@@ -291,6 +291,8 @@ class _HomePageState extends State<HomePage> {
   // You can write more logic when user press on detail
   void _handleViewDetails(int imageIndex, List<MovieModel> apiResult) {
     // Replace with your logic to handle "View Details" action
+
+    // Here add copy to clipboard functionality
   }
 
   Widget _buildMovieList(

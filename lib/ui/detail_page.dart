@@ -25,9 +25,7 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
-    context
-        .read<MovieDataBloc>()
-        .add(ClickToSeeMovieDetails(widget.apiResult[widget.imageIndex].id!));
+    context.read<MovieDataBloc>().add(ClickToSeeMovieDetails(widget.apiResult[widget.imageIndex].id!));
     super.initState();
   }
 
@@ -134,6 +132,13 @@ class _DetailsPageState extends State<DetailsPage> {
                             BlocBuilder<MovieDataBloc, MovieDataState>(
                               builder: (context, state) {
                                 if (state is MovieDataInitialState) {
+
+                                  // This CirculateProgress
+                                  // you see while you waiting for data to load
+                                  // and when even not triggered
+
+                                  // TODO: Look in, maybe we don't need so many
+                                  //  CircularProgressIndicators they handle in else block
                                   return const CircularProgressIndicator();
                                 } else if (state is MovieDetailsState) {
                                   return ListTile(
@@ -145,6 +150,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                               '${state.movieDetailsApiResult.status}')
                                           : null);
                                 } else {
+
+                                  // TODO: Look in, maybe we don't need so many
+                                  //  CircularProgressIndicators they handle in else block
                                   return const CircularProgressIndicator();
                                 }
                               },
@@ -211,7 +219,20 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           );
         } else {
-          return const CircularProgressIndicator();
+
+          // This one you see if something went
+          // wrong and your state is not the one you need
+          return const SizedBox(
+            height: 100,
+            width: 10,
+            child: Center(
+              child: SizedBox(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          );
         }
       },
     );
