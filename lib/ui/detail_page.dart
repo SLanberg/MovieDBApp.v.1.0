@@ -159,10 +159,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     .tagline !=
                                                 "")
                                           ListTile(
-                                            leading: Image.asset(
-                                              "icons/tagline-icon.jpg",
-                                              width: 20,
-                                            ),
+                                            leading: const Icon(Icons.quora),
                                             title: Text(
                                               '“${state.movieDetailsApiResult.tagline}”',
                                               style: Theme.of(context)
