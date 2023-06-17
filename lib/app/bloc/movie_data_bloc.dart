@@ -25,7 +25,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
   MovieDataBloc(this.movieRepository, this.movieDetailRepository)
       : super(MovieDataInitialState()) {
     on<MovieDataEvent>(
-          (event, emit) async {
+      (event, emit) async {
         if (event is LoadMovieDataEvent) {
           emit(MovieDataLoadingState());
           List<MovieModel>? apiResult = await movieRepository.getMovieData(
@@ -89,7 +89,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         try {
           int nextPagePopular = currentState.popularMoviesCurrentPage + 1;
           List<MovieModel>? apiResultPopular =
-          await movieRepository.getMovieData(
+              await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/popular?language=en-US&page=$nextPagePopular&api_key=${dotenv.env['API_KEY']}",
           );
 
@@ -116,7 +116,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         try {
           int nextPageTopRated = currentState.topRatedMoviesCurrentPage + 1;
           List<MovieModel>? apiResultTopRated =
-          await movieRepository.getMovieData(
+              await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=$nextPageTopRated&api_key=${dotenv.env['API_KEY']}",
           );
 
@@ -143,7 +143,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
         try {
           int nextPageUpcoming = currentState.upcomingCurrentPage + 1;
           List<MovieModel>? apiResultUpcoming =
-          await movieRepository.getMovieData(
+              await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=$nextPageUpcoming&api_key=${dotenv.env['API_KEY']}",
           );
 
@@ -169,7 +169,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
 
         try {
           List<MovieModel>? apiResultLatest =
-          await movieRepository.getMovieData(
+              await movieRepository.getMovieData(
             "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${currentState.latestMoviesCurrentPage}&api_key=${dotenv.env['API_KEY']}",
           );
           if (apiResultLatest != null) {
@@ -231,8 +231,8 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
     on<ClickToSeeMovieDetails>((event, emit) async {
       try {
         MovieDetailModel? movieDetailsApiResult =
-        await movieDetailRepository.getMovieDetail(
-            "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
+            await movieDetailRepository.getMovieDetail(
+                "https://api.themoviedb.org/3/movie/${event.movieId}?language=en-US&api_key=${dotenv.env['API_KEY']}");
 
         if (kDebugMode) {
           print("$movieDetailsApiResult movieDetailsApiResult");

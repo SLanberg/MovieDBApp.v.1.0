@@ -148,12 +148,12 @@ class _HomePageState extends State<HomePage> {
 
             return Center(
                 child: Text(
-                  "We've got into undefined state. Chek the state parameter",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(color: Colors.white),
-                ));
+              "We've got into undefined state. Chek the state parameter",
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium
+                  ?.copyWith(color: Colors.white),
+            ));
           },
         ),
       ),
@@ -161,12 +161,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildHomeSections(
-      List<MovieModel> latestApiResult,
-      List<MovieModel> popularApiResult,
-      List<MovieModel> topRatedApiResult,
-      List<MovieModel> upcomingApiResult,
-      MovieModel? homePageHeroPoster,
-      ) {
+    List<MovieModel> latestApiResult,
+    List<MovieModel> popularApiResult,
+    List<MovieModel> topRatedApiResult,
+    List<MovieModel> upcomingApiResult,
+    MovieModel? homePageHeroPoster,
+  ) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -287,9 +287,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildMovieList(
-      List<MovieModel> movieList,
-      ScrollController scrollController,
-      ) {
+    List<MovieModel> movieList,
+    ScrollController scrollController,
+  ) {
     return SizedBox(
       height: 300.0,
       child: ListView.builder(
@@ -308,28 +308,27 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      _showImageDetails(
-                          context, movieList[index]);
+                      _showImageDetails(context, movieList[index]);
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: movieList[index].posterPath != null
                           ? CachedNetworkImage(
-                        imageUrl:
-                        "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
-                        width: 180,
-                        fit: BoxFit.cover,
-                        errorWidget: (BuildContext context, String url,
-                            dynamic error) {
-                          return Image.asset(
-                              'images/No-Image-Placeholder.png');
-                        },
-                      )
+                              imageUrl:
+                                  "http://image.tmdb.org/t/p/w500/${movieList[index].posterPath}",
+                              width: 180,
+                              fit: BoxFit.cover,
+                              errorWidget: (BuildContext context, String url,
+                                  dynamic error) {
+                                return Image.asset(
+                                    'images/No-Image-Placeholder.png');
+                              },
+                            )
                           : Image.asset(
-                        'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
-                        width: 180,
-                        fit: BoxFit.cover,
-                      ),
+                              'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                              width: 180,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                 ),
