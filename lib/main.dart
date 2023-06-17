@@ -38,14 +38,14 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: const TextTheme(
           bodyLarge: TextStyle(
-            fontFamily: "Roboto",
+            fontFamily: "Lato",
             fontSize: 20,
             letterSpacing: 0,
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),
           bodyMedium: TextStyle(
-            fontFamily: "Roboto",
+            fontFamily: "Lato",
             fontSize: 14,
             letterSpacing: 0,
             fontWeight: FontWeight.w400,
