@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // Project imports:
-import 'package:sportsbet_task/models/movie_model.dart';
+import '../../domain/models/movie_model.dart';
 
 class MovieRepository {
   Future<List<MovieModel>?> getMovieData(String url) async {
