@@ -9,12 +9,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+// Project imports:
 import '../../domain/models/movie_detail_model.dart';
 import '../../domain/models/movie_model.dart';
 import '../../domain/repositories/movie_detail_repository.dart';
 import '../../domain/repositories/movie_repository.dart';
-
-
 
 part 'movie_data_event.dart';
 part 'movie_data_state.dart';
