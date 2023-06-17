@@ -38,7 +38,9 @@ The Details Screen provides more detailed information about a selected movie.
 
 2. Movie Information: The Details Screen displays the selected movie's image, along with other information obtained from an external API.
 
-3. Video Play Icon: If a video is available for the selected movie, a play icon is shown. Clicking on this icon triggers a snackbar that displays the movie's name.
+3. You can copy the movie's title from the details screen and then use it to paste it into your local cinema's website or a search engine.
+
+4. Video Play Icon: If a video is available for the selected movie, a play icon is shown. Clicking on this icon triggers a snackbar that displays the movie's name.
 
 ### External API
 To fetch detailed movie information and check for video availability, the app utilizes an external API. The API provides data such as the movie's title, release date, duration, overview, and video availability.
