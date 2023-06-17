@@ -6,14 +6,14 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 // Flutter imports:
-import 'package:film_finder/app/ui/home_page.dart';
-import 'package:film_finder/app/widgets/custom_expansion_container.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 
-
+// Project imports:
+import 'package:film_finder/app/ui/home_page.dart';
+import 'package:film_finder/app/widgets/custom_expansion_container.dart';
 
 void main() {
   testWidgets('Check if movie containers are presented', (WidgetTester tester) async {
