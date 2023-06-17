@@ -1,4 +1,4 @@
-package com.example.sportsbet_task
+package film_finder
 
 import io.flutter.embedding.android.FlutterActivity
 

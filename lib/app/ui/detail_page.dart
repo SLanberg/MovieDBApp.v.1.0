@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Project imports:
-import 'package:sportsbet_task/bloc/movie_data_bloc.dart';
-import 'package:sportsbet_task/models/movie_model.dart';
+import '../../domain/models/movie_model.dart';
+import '../bloc/movie_data_bloc.dart';
 import '../utils/date_utils.dart';
+
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage(
