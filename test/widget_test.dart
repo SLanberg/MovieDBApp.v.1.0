@@ -12,8 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:sportsbet_task/app/ui/home_page.dart';
-import 'package:sportsbet_task/app/widgets/custom_expansion_container.dart';
+import 'package:film_finder/app/ui/home_page.dart';
+import 'package:film_finder/app/widgets/custom_expansion_container.dart';
+
+// Project imports:
+
 
 void main() {
   testWidgets('Check if movie containers are presented', (WidgetTester tester) async {
