@@ -16,7 +16,7 @@ class MovieDataLoadedState extends MovieDataState {
   final List<MovieModel> popularMoviesApiResult;
   final List<MovieModel> topRatedApiResult;
   final List<MovieModel> upcomingApiResult;
-  final String homePageHeroPoster;
+  final MovieModel homePageHeroPoster;
   final int latestMoviesCurrentPage;
   final int popularMoviesCurrentPage;
   final int topRatedMoviesCurrentPage;
@@ -41,7 +41,7 @@ class MovieDataLoadedState extends MovieDataState {
     List<MovieModel>? popularMoviesApiResult,
     List<MovieModel>? topRatedApiResult,
     List<MovieModel>? upcomingApiResult,
-    String? homePageHeroPoster,
+    MovieModel? homePageHeroPoster,
     int? latestMoviesCurrentPage,
     int? popularMoviesCurrentPage,
     int? topRatedMoviesCurrentPage,
@@ -49,33 +49,38 @@ class MovieDataLoadedState extends MovieDataState {
     bool? isLatestMovieSectionExpanded,
   }) {
     return MovieDataLoadedState(
-      latestMoviesApiResult: latestMoviesApiResult ?? this.latestMoviesApiResult,
-      popularMoviesApiResult: popularMoviesApiResult ?? this.popularMoviesApiResult,
+      latestMoviesApiResult:
+          latestMoviesApiResult ?? this.latestMoviesApiResult,
+      popularMoviesApiResult:
+          popularMoviesApiResult ?? this.popularMoviesApiResult,
       topRatedApiResult: topRatedApiResult ?? this.topRatedApiResult,
       upcomingApiResult: upcomingApiResult ?? this.upcomingApiResult,
-      latestMoviesCurrentPage: latestMoviesCurrentPage ?? this.latestMoviesCurrentPage,
-      popularMoviesCurrentPage: popularMoviesCurrentPage ?? this.popularMoviesCurrentPage,
-      topRatedMoviesCurrentPage: topRatedMoviesCurrentPage ?? this.topRatedMoviesCurrentPage,
+      latestMoviesCurrentPage:
+          latestMoviesCurrentPage ?? this.latestMoviesCurrentPage,
+      popularMoviesCurrentPage:
+          popularMoviesCurrentPage ?? this.popularMoviesCurrentPage,
+      topRatedMoviesCurrentPage:
+          topRatedMoviesCurrentPage ?? this.topRatedMoviesCurrentPage,
       upcomingCurrentPage: upcomingCurrentPage ?? this.upcomingCurrentPage,
-        isLatestMovieSectionExpanded: isLatestMovieSectionExpanded ?? this.isLatestMovieSectionExpanded,
-        homePageHeroPoster: homePageHeroPoster ?? this.homePageHeroPoster,
+      isLatestMovieSectionExpanded:
+          isLatestMovieSectionExpanded ?? this.isLatestMovieSectionExpanded,
+      homePageHeroPoster: homePageHeroPoster ?? this.homePageHeroPoster,
     );
   }
 
   @override
   List<Object> get props => [
-    latestMoviesApiResult,
-    popularMoviesApiResult,
-    topRatedApiResult,
-    homePageHeroPoster,
-    upcomingApiResult,
-    latestMoviesCurrentPage,
-    popularMoviesCurrentPage,
-    topRatedMoviesCurrentPage,
-    upcomingCurrentPage,
-  ];
+        latestMoviesApiResult,
+        popularMoviesApiResult,
+        topRatedApiResult,
+        homePageHeroPoster,
+        upcomingApiResult,
+        latestMoviesCurrentPage,
+        popularMoviesCurrentPage,
+        topRatedMoviesCurrentPage,
+        upcomingCurrentPage,
+      ];
 }
-
 
 class MovieDataErrorState extends MovieDataState {}
 
@@ -88,7 +93,6 @@ class MovieDetailsState extends MovieDataState {
 
   @override
   List<Object> get props => [
-    movieDetailsApiResult,
-  ];
+        movieDetailsApiResult,
+      ];
 }
-

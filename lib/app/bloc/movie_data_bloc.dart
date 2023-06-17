@@ -36,6 +36,8 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
           if (apiResult == null || popularResult == null) {
             emit(MovieDataErrorState());
           } else {
+            int randomIndex = Random().nextInt(apiResult.length);
+
             emit(MovieDataLoadedState(
               latestMoviesApiResult: apiResult,
               popularMoviesApiResult: popularResult,
@@ -46,9 +48,7 @@ class MovieDataBloc extends Bloc<MovieDataEvent, MovieDataState> {
               popularMoviesCurrentPage: 1,
               topRatedMoviesCurrentPage: 1,
               upcomingCurrentPage: 1,
-              homePageHeroPoster:
-              apiResult[Random().nextInt(apiResult.length)].posterPath ??
-                  "",
+              homePageHeroPoster: apiResult[randomIndex],
             ));
           }
         }
