@@ -32,28 +32,26 @@ class MyApp extends StatelessWidget {
       title: 'MovieDB',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: Colors.white,
-        primarySwatch: Colors.grey,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(
-            fontFamily: "Lato",
-            fontSize: 20,
-            letterSpacing: 0,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-          bodyMedium: TextStyle(
-            fontFamily: "Lato",
-            fontSize: 14,
-            letterSpacing: 0,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
-          ),
-        )
-      ),
-
+          brightness: Brightness.light,
+          primaryColor: Colors.white,
+          primarySwatch: Colors.grey,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(
+              fontFamily: "Lato",
+              fontSize: 20,
+              letterSpacing: 0,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+            bodyMedium: TextStyle(
+              fontFamily: "Lato",
+              fontSize: 14,
+              letterSpacing: 0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+          )),
       home: MultiBlocProvider(
         providers: [
           BlocProvider<MovieDataBloc>(

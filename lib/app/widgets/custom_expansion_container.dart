@@ -30,10 +30,7 @@ class CustomExpansionContainer extends StatelessWidget {
           collapsedIconColor: Colors.black,
           tilePadding: const EdgeInsets.only(left: 10.0, right: 15.0),
           childrenPadding: const EdgeInsets.only(left: 0.0, bottom: 20),
-          title: Text(title,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium),
+          title: Text(title, style: Theme.of(context).textTheme.bodyMedium),
           children: <Widget>[
             child,
           ],

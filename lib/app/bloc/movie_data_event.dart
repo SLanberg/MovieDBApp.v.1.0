@@ -71,7 +71,6 @@ class TimeToChangePosterEvent extends MovieDataEvent {
   List<Object> get props => [];
 }
 
-
 class ClickOnButtonWithEvent extends MovieDataEvent {
   @override
   List<Object> get props => [];

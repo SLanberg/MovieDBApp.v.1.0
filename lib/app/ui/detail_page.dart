@@ -20,7 +20,6 @@ class DetailsPage extends StatefulWidget {
   final BuildContext context;
   final MovieModel movieModel;
 
-
   @override
   State<DetailsPage> createState() => _DetailsPageState();
 }
@@ -65,9 +64,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: widget.movieModel
-                                            .posterPath !=
-                                        null
+                                child: widget.movieModel.posterPath != null
                                     ? CachedNetworkImage(
                                         imageUrl:
                                             "http://image.tmdb.org/t/p/w500/${widget.movieModel.posterPath}",
@@ -81,21 +78,17 @@ class _DetailsPageState extends State<DetailsPage> {
                                       ),
                               ),
 
-                              if (widget.movieModel.title !=
-                                      null &&
-                                  widget.movieModel.title !=
-                                      null)
+                              if (widget.movieModel.title != null &&
+                                  widget.movieModel.title != null)
                                 ListTile(
                                   leading: const Icon(Icons.info),
-                                  title: Text(
-                                      '${widget.movieModel.title}',
+                                  title: Text('${widget.movieModel.title}',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium),
                                   onTap: () {
-                                    String title = widget.movieModel
-                                            .title ??
-                                        "";
+                                    String title =
+                                        widget.movieModel.title ?? "";
                                     Clipboard.setData(
                                         ClipboardData(text: title));
                                     final snackBar = SnackBar(
@@ -135,9 +128,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                                     null
                                                 ? Text(
                                                     '${state.movieDetailsApiResult.status}',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium)
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium)
                                                 : null),
                                       ],
                                     );
@@ -151,26 +144,23 @@ class _DetailsPageState extends State<DetailsPage> {
 
                               ListTile(
                                 leading: const Icon(Icons.calendar_month),
-                                title: widget.movieModel
-                                            .releaseDate !=
-                                        null
-                                    ? Text(formatDateWithSuffix(widget.movieModel
-                                        .releaseDate!), style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium)
+                                title: widget.movieModel.releaseDate != null
+                                    ? Text(
+                                        formatDateWithSuffix(
+                                            widget.movieModel.releaseDate!),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium)
                                     : null,
                               ),
 
                               ListTile(
                                   leading: const Icon(Icons.star_border),
-                                  title: widget.movieModel
-                                              .voteAverage !=
-                                          null
-                                      ? Text(
-                                          '${widget.movieModel.voteAverage}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium)
+                                  title: widget.movieModel.voteAverage != null
+                                      ? Text('${widget.movieModel.voteAverage}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium)
                                       : null),
 
                               BlocBuilder<MovieDataBloc, MovieDataState>(
@@ -236,26 +226,19 @@ class _DetailsPageState extends State<DetailsPage> {
                               ListTile(
                                   leading:
                                       const Icon(Icons.contact_support_rounded),
-                                  title: widget.movieModel
-                                              .overview !=
-                                          null
-                                      ? Text(
-                                          '${widget.movieModel.overview}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium)
+                                  title: widget.movieModel.overview != null
+                                      ? Text('${widget.movieModel.overview}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium)
                                       : null),
 
                               // In the response, if video is available show a play icon
                               // (use any free resource available).
                               // Clicking on this icon snackbar should appear with movie name.
                               ListTile(
-                                  leading: widget.movieModel
-                                                  .video !=
-                                              null &&
-                                      widget.movieModel
-                                                  .video !=
-                                              false
+                                  leading: widget.movieModel.video != null &&
+                                          widget.movieModel.video != false
                                       ? GestureDetector(
                                           onTap: () {
                                             final snackBar = SnackBar(
