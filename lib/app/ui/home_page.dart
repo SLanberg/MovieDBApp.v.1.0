@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
               // Instead of downloading specific Movie details
               // I should Iterate through the list of movies get their details
               // And store it in the list.
-              debugPrint("⚠️ Something from API "
+              debugPrint("Something from API "
                   "doesn't load up If you see this "
                   "message it means you received error from API");
 
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
       List<MovieModel> popularApiResult,
       List<MovieModel> topRatedApiResult,
       List<MovieModel> upcomingApiResult,
-      String? homePageHeroPoster,
+      MovieModel? homePageHeroPoster,
       ) {
     return CustomScrollView(
       slivers: [
@@ -175,13 +175,19 @@ class _HomePageState extends State<HomePage> {
 
           // pinned: true,
           flexibleSpace: FlexibleSpaceBar(
-            background: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    'http://image.tmdb.org/t/p/w500/$homePageHeroPoster',
+            background: GestureDetector(
+              onTap: () {
+                // TODO: find a better way to avoid null
+                _showImageDetails(context, homePageHeroPoster ?? MovieModel());
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      'http://image.tmdb.org/t/p/w500/${homePageHeroPoster?.posterPath}',
+                    ),
+                    fit: BoxFit.fill,
                   ),
-                  fit: BoxFit.fill,
                 ),
               ),
             ),
@@ -247,8 +253,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _showImageDetails(BuildContext context, int imageIndex,
-      List<MovieModel> apiResult, int? movieId) {
+  void _showImageDetails(BuildContext context, MovieModel movieModel) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -258,7 +263,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         builder: (context) {
-          return DetailsPage(context, imageIndex, apiResult, movieId);
+          return DetailsPage(context, movieModel);
         });
   }
 
@@ -304,7 +309,7 @@ class _HomePageState extends State<HomePage> {
                   child: GestureDetector(
                     onTap: () {
                       _showImageDetails(
-                          context, index, movieList, movieList[index].id);
+                          context, movieList[index]);
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
