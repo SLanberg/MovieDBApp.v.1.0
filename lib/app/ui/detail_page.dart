@@ -91,7 +91,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ListTile(
                                   leading: const Icon(Icons.info),
                                   title: Text(
-                                      '${widget.apiResult[widget.imageIndex].title}'),
+                                      '${widget.apiResult[widget.imageIndex].title}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium),
                                   onTap: () {
                                     String title = widget
                                             .apiResult[widget.imageIndex]
@@ -135,7 +138,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                                         .status !=
                                                     null
                                                 ? Text(
-                                                    '${state.movieDetailsApiResult.status}')
+                                                    '${state.movieDetailsApiResult.status}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium)
                                                 : null),
                                       ],
                                     );
@@ -154,7 +160,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                         null
                                     ? Text(formatDateWithSuffix(widget
                                         .apiResult[widget.imageIndex]
-                                        .releaseDate!))
+                                        .releaseDate!), style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium)
                                     : null,
                               ),
 
@@ -164,7 +172,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                               .voteAverage !=
                                           null
                                       ? Text(
-                                          '${widget.apiResult[widget.imageIndex].voteAverage}')
+                                          '${widget.apiResult[widget.imageIndex].voteAverage}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium)
                                       : null),
 
                               BlocBuilder<MovieDataBloc, MovieDataState>(
@@ -234,7 +245,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                               .overview !=
                                           null
                                       ? Text(
-                                          '${widget.apiResult[widget.imageIndex].overview}')
+                                          '${widget.apiResult[widget.imageIndex].overview}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium)
                                       : null),
 
                               // In the response, if video is available show a play icon
