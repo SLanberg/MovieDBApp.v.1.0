@@ -321,11 +321,11 @@ class _HomePageState extends State<HomePage> {
                               errorWidget: (BuildContext context, String url,
                                   dynamic error) {
                                 return Image.asset(
-                                    'images/No-Image-Placeholder.png');
+                                    'assets/images/No-Image-Placeholder.png');
                               },
                             )
                           : Image.asset(
-                              'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                              'assets/images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
                               width: 180,
                               fit: BoxFit.cover,
                             ),

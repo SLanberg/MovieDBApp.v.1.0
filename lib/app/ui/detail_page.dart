@@ -72,7 +72,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                         fit: BoxFit.cover,
                                       )
                                     : Image.asset(
-                                        'images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
+                                        'assets/images/No-Image-Placeholder.png', // Replace with the path to your placeholder image in assets
                                         height: 490,
                                         fit: BoxFit.cover,
                                       ),
