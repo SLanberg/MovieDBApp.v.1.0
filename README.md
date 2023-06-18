@@ -1,9 +1,9 @@
 # Quick Setup
 
 Go to the project root directory 
-1. Create .env file 
-2. Get yours API Key from here https://www.themoviedb.org/settings/api
-3. Add API key write in your env file like this: API_KEY={Provide your API KEY in .env file}
+1. Create .env file in the root directory of the project
+2. Get your API Key from here https://www.themoviedb.org/settings/api
+3. Write in your .env file: API_KEY={Provide your API KEY in .env file}
 4. In Android Studio Terminal: flutter pub get 
 5. You are good to go!
 
