@@ -41,7 +41,7 @@ class _DetailsPageState extends State<DetailsPage> {
       builder: (context, state) {
         if (state is MovieDetailsState) {
           return ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: DraggableScrollableSheet(
               expand: false,
               initialChildSize: 0.75,
@@ -101,9 +101,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                             ?.copyWith(color: Colors.white),
                                       ),
                                       backgroundColor: Colors.green,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      ),
                                     );
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
+
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                   },
                                 ),
 
@@ -253,6 +256,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                                         color: Colors.white),
                                               ),
                                               backgroundColor: Colors.green,
+                                              shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                              ),
                                             );
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(snackBar);
