@@ -1,4 +1,4 @@
-package film_finder
+package com.example.film_finder
 
 import io.flutter.embedding.android.FlutterActivity
 
