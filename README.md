@@ -52,3 +52,10 @@ The Flutter Movie App provides users with a visually appealing interface to expl
 
 To sort imports in alphabetical order we use https://pub.dev/packages/import_sorter:
 Run in the terminal "flutter pub run import_sorter:main"
+
+To import app for the debug:
+flutter build apk --debug
+
+To change package name:
+flutter pub run change_app_package_name:main com.new.package.name
+
